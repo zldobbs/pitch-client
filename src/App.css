@@ -1,0 +1,24 @@
+/* Custom app styles */ 
+
+/* 
+  Colors: 
+    Dark Blue: #121B92;
+    Blue: #414BC7; 
+    Light Blue: #8990E4;
+    Orange: #FF9009;
+    Light Orange: #FFA537;
+    Yellow: #FFE509; 
+*/
+
+html {
+  color: #FFFFFF;
+  background-color: #453B40; 
+}
+
+a {
+  color: #CE2484
+}
+
+nav {
+  background-color: #CE2484
+}
