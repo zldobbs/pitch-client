@@ -16,9 +16,17 @@ html {
 }
 
 a {
-  color: #CE2484
+  color: #CE2484;
 }
 
 nav {
-  background-color: #CE2484
+  background-color: #CE2484;
+}
+
+input {
+  color: #FFFFFF;
+}
+
+.input-field {
+  margin-top: 0; 
 }
