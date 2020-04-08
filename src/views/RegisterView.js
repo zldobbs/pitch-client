@@ -74,12 +74,12 @@ class RegisterView extends Component {
   
   // update the state of the password based on what is being typed
   handlePasswordValChange(e) {
-      this.setState({ passwordVal: e.target.value });
+    this.setState({ passwordVal: e.target.value });
   }
 
   // update the state of the confirm password based on what is being typed
   handleConfirmPasswordValChange(e) {
-      this.setState({ confirmPasswordVal: e.target.value });
+    this.setState({ confirmPasswordVal: e.target.value });
   }
 
   render() {

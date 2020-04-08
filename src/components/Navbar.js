@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react';
 
-//Design imports
+// Design imports
 import '../App.css';
 
 import { Link } from 'react-router-dom';
@@ -36,7 +36,7 @@ class Navbar extends Component {
 
     if (!username) {
       headPart = (
-        <ul className="right hide-on-med-and-down">
+        <ul className="right">
           <li>
             <Link to="/login">Login</Link>
           </li>
@@ -46,7 +46,7 @@ class Navbar extends Component {
     else {
       headPart = (
         <ul className="right">
-          <li>
+          <li className="navbar-text">
             {username}
           </li>
           <li>

@@ -11,8 +11,8 @@ class HelpView extends Component {
   render() {
     return(
       <div className="container">
-        <div class="row center-align">
-          <div class="col s12 m6 offset-m3">
+        <div className="row center-align">
+          <div className="col s12 m6 offset-m3">
             <h3>How to play pitch</h3>
           </div>
         </div>

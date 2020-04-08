@@ -17,6 +17,7 @@ import LandingView from './views/LandingView';
 import LoginView from './views/LoginView'; 
 import MissingView from './views/MissingView';
 import RegisterView from './views/RegisterView'; 
+import RoomStagingView from './views/RoomStagingView'; 
 
 class App extends Component {
   componentDidMount() {
@@ -35,6 +36,7 @@ class App extends Component {
           <Route exact path="/help" component={HelpView}></Route>
           <Route exact path="/login" component={LoginView}></Route>
           <Route exact path="/register" component={RegisterView}></Route>
+          <Route exact path="/room/staging/:roomId" component={RoomStagingView}></Route>
           {/* default case */}
           <Route component={MissingView}></Route>
         </Switch>
@@ -46,6 +48,9 @@ class App extends Component {
 }
 
 export default App;
+
+// define the endpoint of this frontend
+export const siteLink = 'http://localhost:3000';
 
 // manage the endpoint of the server for api requests
 export const endpoint = 'http://localhost:8000';

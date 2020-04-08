@@ -23,10 +23,23 @@ nav {
   background-color: #CE2484;
 }
 
+.navbar-text {
+  margin-right: 5px; 
+}
+
 input {
   color: #FFFFFF;
 }
 
 .input-field {
   margin-top: 0; 
+}
+
+.collection {
+  max-height: 150px;
+  overflow-y: scroll;
+}
+
+.collection-item {
+  color: #000000; 
 }
