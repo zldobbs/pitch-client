@@ -53,6 +53,14 @@ class RoomStagingView extends Component {
       );
     }
 
+    let loginText; 
+    if (this.state.user) {
+      loginText = `logged in as ${this.state.user}`;
+    }
+    else {
+      loginText = `not logged in. Sign in to save game history.`; 
+    }
+
     return(
       <div className="container">
         <div className="row center-align">
@@ -63,8 +71,20 @@ class RoomStagingView extends Component {
           </div>
         </div>
         <div className="row center-align">
+          <div className="col s12 m6 offset-m3">
+            <p>You are {loginText}</p>
+            {/* TODO Display name should be an input field */}
+            <p>Display Name: {this.state.user ? this.state.user : 'Anonymous'}</p>
+          </div>
+        </div>
+        <div className="row center-align">
           <TeamList></TeamList>
           <TeamList></TeamList>
+        </div>
+        <div className="row center-align">
+          <p>Two players are required to be on each team.</p>
+          {/* TODO Disable button when each team is not exactly 2 players */}
+          <button className="btn waves-effect">Start Game</button>
         </div>
       </div>
     );

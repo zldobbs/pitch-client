@@ -15,6 +15,10 @@ html {
   background-color: #453B40; 
 }
 
+.row {
+  margin-bottom: 5px; 
+}
+
 a {
   color: #CE2484;
 }

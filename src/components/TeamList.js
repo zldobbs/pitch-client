@@ -25,12 +25,13 @@ class TeamList extends Component {
     return(
       <div className="col s12 m6">
         <p>Team Name</p>
-        <ul class="collection">
-          <li class="collection-item">Alvin</li>
-          <li class="collection-item">Alvin</li>
-          <li class="collection-item">Alvin</li>
-          <li class="collection-item">Alvin</li>
+        <ul className="collection">
+          <li className="collection-item">Alvin</li>
+          <li className="collection-item">Alvin</li>
+          <li className="collection-item">Alvin</li>
+          <li className="collection-item">Alvin</li>
         </ul>
+        <button className="btn waves-effect">Join Team Name</button>
       </div>
     );
   }
