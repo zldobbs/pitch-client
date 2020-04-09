@@ -36,11 +36,23 @@ class TeamList extends Component {
     }
   }
 
-  onClickJoinTeam() {
+  async onClickJoinTeam() {
     let joinTeamRequest = {
       'teamId': this.props.team._id, 
       'user': loadUser()
     };
+
+    // If user is already on a team leave that team first 
+    let teamInfo = loadTeam();
+    if (teamInfo != undefined) {
+      let leaveTeamRequest = {
+        'teamId': teamInfo[0], 
+        'playerNum': teamInfo[1],
+        'user': loadUser()
+      };
+      await axios.post(`${endpoint}/api/team/leave`, leaveTeamRequest);
+    }
+
     axios.post(`${endpoint}/api/team/join`, joinTeamRequest)
     .then((res) => {
       if (res.data.status == "success") {
@@ -99,10 +111,10 @@ class TeamList extends Component {
   render() {
     let teamButton;
     if (this.state.userTeamId == this.props.team._id) {
-      teamButton = (<button onClick={this.onClickLeaveTeam} className="btn waves-effect red">Leave Team</button>);
+      teamButton = (<button onClick={this.onClickLeaveTeam} className="btn waves-effect red">Leave {this.props.team.name}</button>);
     }
     else {
-      teamButton = (<button onClick={this.onClickJoinTeam} className="btn waves-effect">Join Team Name</button>);
+      teamButton = (<button onClick={this.onClickJoinTeam} className="btn waves-effect">Join {this.props.team.name}</button>);
     }
 
     return(

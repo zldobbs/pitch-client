@@ -94,6 +94,7 @@ class LandingView extends Component {
             <p>
               Login to keep stats on your account, or play as anonymous user.
             </p>
+            <p><i>This game requires cookies to play. Please understand and consent to this if you wish to play!</i></p>
           </div>
         </div>
         { errorMessage }
