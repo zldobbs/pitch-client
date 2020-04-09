@@ -37,7 +37,7 @@ class LandingView extends Component {
     .catch((err) => {
         console.log(err);
         this.setState({ errorText: "Server error while creating room" });
-    })
+    });
   }
 
   // join the given Room 

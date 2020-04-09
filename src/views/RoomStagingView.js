@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { siteLink, endpoint, loadUser } from '../App'; 
+import { siteLink, endpoint, loadUser, socket } from '../App';
 
 import TeamList from '../components/TeamList'; 
 
@@ -15,18 +15,34 @@ class RoomStagingView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      room: '',
-      user: ''
+      roomId: '',
+      team1: '',
+      team2: '',
+      user: '',
+      userTeam: '',
+      userPlayer: '', 
     };
 
     // TODO need to redirect to in progress game if the room has already started
   }
 
   componentDidMount() {
+    // Setup socket endpoints 
+    socket.on('team-change', (team1, team2) => {
+      this.setState({ team1: team1, team2: team2 });
+    });
+
+    // Retrieve the current room
     axios.get(`${endpoint}/api/room/staging/${this.props.match.params.roomId}`)
     .then((res) => {
       if (res.data.status == "success") {
-        this.setState({ room: res.data.room });
+        this.setState({ 
+          roomId: res.data.room.short_id,
+          team1: res.data.room.team1,
+          team2: res.data.room.team2
+        });
+        console.log(this.state);
+        socket.emit('join-room', res.data.room.short_id);
       }
       else {
         this.setState({ room: '' });
@@ -35,7 +51,7 @@ class RoomStagingView extends Component {
       console.log(err);
       this.setState({ room: '' });
     });
-
+    
     this.setState({ user: loadUser() });
   }
 
@@ -66,8 +82,8 @@ class RoomStagingView extends Component {
         <div className="row center-align">
           <div className="col s12 m6 offset-m3">
             <h4>Preparing game</h4>
-            <h6>Your Room ID is: { this.state.room.short_id }</h6>
-            <p>The magic link to join this room is: <Link to={{ pathname:`/room/staging/${this.state.room.short_id}` }}>{siteLink}/room/staging/{this.state.room.short_id}</Link></p>
+            <h6>Your Room ID is: { this.state.roomId }</h6>
+            <p>The magic link to join this room is: <Link to={{ pathname:`/room/staging/${this.state.roomId}` }}>{siteLink}/room/staging/{this.state.roomId}</Link></p>
           </div>
         </div>
         <div className="row center-align">
@@ -78,8 +94,8 @@ class RoomStagingView extends Component {
           </div>
         </div>
         <div className="row center-align">
-          <TeamList></TeamList>
-          <TeamList></TeamList>
+          <TeamList team={this.state.team1}></TeamList>
+          <TeamList team={this.state.team2}></TeamList>
         </div>
         <div className="row center-align">
           <p>Two players are required to be on each team.</p>

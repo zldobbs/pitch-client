@@ -55,6 +55,9 @@ export const siteLink = 'http://localhost:3000';
 // manage the endpoint of the server for api requests
 export const endpoint = 'http://localhost:8000';
 
+// Setup socket connection with backend 
+export const socket = socketIOClient(endpoint);
+
 export const loginUser = (username) => {
   Cookies.set('user', username, { expires: 1 });
   window.location.reload();
@@ -68,4 +71,20 @@ export const logoutUser = () => {
 export const loadUser = () => {
   let user = Cookies.get('user');
   return user;
+}
+
+export const joinTeam = (teamInfo) => {
+  Cookies.set('team', teamInfo, {expires: 1});
+  window.location.reload();
+}
+
+export const leaveTeam = () => {
+  Cookies.remove('team');
+  window.location.reload();
+}
+
+export const loadTeam = () => {
+  let teamInfo = Cookies.get('team');
+  teamInfo = (teamInfo == undefined ? undefined : teamInfo.split(','));
+  return teamInfo; 
 }
