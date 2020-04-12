@@ -95,16 +95,46 @@ class TeamList extends Component {
     });
   }
 
+  getReadyIcon(num) {
+    switch(num) {
+      case 1: {
+        if (this.props.team.player1Ready == true) {
+          return(<i className="tiny material-icons green-text">check</i>);
+        }
+      }
+      case 2: {
+        if (this.props.team.player2Ready == true) {
+          return(<i className="tiny material-icons green-text">check</i>);
+        }
+      }
+      default:
+        return(<span></span>);
+    }
+
+    return(<span></span>);
+  }
+
   getPlayer(num) {
     switch(num) {
       case 1: {
-        return(this.props.team.player1DisplayName ? this.props.team.player1DisplayName : '...');
+        if (this.state.userTeamId == this.props.team._id && this.state.userPlayer == 'player1') {
+          return(<li className="collection-item"><i className="tiny material-icons">star</i> {this.props.team.player1DisplayName ? this.props.team.player1DisplayName : '...'}{this.getReadyIcon(1)}</li>);
+        }
+        else {
+          return(<li className="collection-item">{this.props.team.player1DisplayName ? this.props.team.player1DisplayName : '...'}{this.getReadyIcon(1)}</li>);
+        }
       }
       case 2: {
-        return(this.props.team.player2DisplayName ? this.props.team.player2DisplayName : '...');
+        if (this.state.userTeamId == this.props.team._id && this.state.userPlayer == 'player2') {
+          return(<li className="collection-item"><i className="tiny material-icons">star</i> {this.props.team.player2DisplayName ? this.props.team.player2DisplayName : '...'}{this.getReadyIcon(2)}</li>);
+        }
+        else {
+          return(<li className="collection-item">{this.props.team.player2DisplayName ? this.props.team.player2DisplayName : '...'}{this.getReadyIcon(2)}</li>);
+        }
+
       }
       default: 
-        return('...');
+        return(<li className="collection-item">...</li>);
     }
   }
 
@@ -114,15 +144,20 @@ class TeamList extends Component {
       teamButton = (<button onClick={this.onClickLeaveTeam} className="btn waves-effect red">Leave {this.props.team.name}</button>);
     }
     else {
-      teamButton = (<button onClick={this.onClickJoinTeam} className="btn waves-effect">Join {this.props.team.name}</button>);
+      if (this.props.team.player1 != null && this.props.team.player2 != null) {
+        teamButton = (<p>Team is full</p>);
+      }
+      else {
+        teamButton = (<button onClick={this.onClickJoinTeam} className="btn waves-effect">Join {this.props.team.name}</button>);
+      }
     }
 
     return(
       <div className="col s12 m6">
         <p>{ this.props.team.name }</p>
         <ul className="collection">
-          <li className="collection-item">{this.getPlayer(1)}</li>
-          <li className="collection-item">{this.getPlayer(2)}</li>
+          {this.getPlayer(1)}
+          {this.getPlayer(2)}
         </ul>
         {teamButton}
       </div>

@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { siteLink, endpoint, loadUser, socket } from '../App';
+import { siteLink, endpoint, loadUser, loadTeam, socket } from '../App';
 
 import TeamList from '../components/TeamList'; 
 
@@ -19,10 +19,11 @@ class RoomStagingView extends Component {
       team1: '',
       team2: '',
       user: '',
-      userTeam: '',
+      userTeamId: '',
       userPlayer: '', 
     };
 
+    this.handleReadyClick = this.handleReadyClick.bind(this);
     // TODO need to redirect to in progress game if the room has already started
   }
 
@@ -51,8 +52,34 @@ class RoomStagingView extends Component {
       console.log(err);
       this.setState({ room: '' });
     });
-    
+
+    let teamInfo = loadTeam();
+    if (teamInfo != undefined) {
+      this.setState({
+        userTeamId: teamInfo[0], 
+        userPlayer: teamInfo[1]
+      });
+    }
     this.setState({ user: loadUser() });
+  }
+
+  handleReadyClick() {
+    if (this.state.userPlayer == '') {
+      return; 
+    }
+
+    let readyRequest = {
+      'teamId': this.state.userTeamId,
+      'playerNum': this.state.userPlayer
+    };
+    console.log(readyRequest); 
+    axios.post(`${endpoint}/api/team/ready`, readyRequest)
+    .then((res) => {
+      console.log(res); 
+    })
+    .catch((err) => {
+      console.log(err); 
+    });
   }
 
   render() {
@@ -77,6 +104,21 @@ class RoomStagingView extends Component {
       loginText = `not logged in. Sign in to save game history.`; 
     }
 
+    let readyButton;
+    if (this.state.userPlayer != '' && (this.state.userTeamId == this.state.team1._id || this.state.userTeamId == this.state.team2._id)) {
+      let team = (this.state.team1._id == this.state.userTeamId ? this.state.team1 : this.state.team2); 
+      let playerReady = (this.state.userPlayer == 'player1' ? team.player1Ready : team.player2Ready);
+      if (playerReady) {
+        readyButton = (<button onClick={this.handleReadyClick} className="btn waves-effect green">Ready</button>);
+      }
+      else {
+        readyButton = (<button onClick={this.handleReadyClick} className="btn waves-effect red">Not Ready</button>);
+      }
+    }
+    else {
+      readyButton = (<span></span>);
+    }
+
     return(
       <div className="container">
         <div className="row center-align">
@@ -89,8 +131,6 @@ class RoomStagingView extends Component {
         <div className="row center-align">
           <div className="col s12 m6 offset-m3">
             <p>You are {loginText}</p>
-            {/* TODO Display name should be an input field */}
-            <p>Display Name: {this.state.user ? this.state.user : 'Anonymous'}</p>
           </div>
         </div>
         <div className="row center-align">
@@ -98,9 +138,8 @@ class RoomStagingView extends Component {
           <TeamList team={this.state.team2}></TeamList>
         </div>
         <div className="row center-align">
-          <p>Two players are required to be on each team.</p>
-          {/* TODO Disable button when each team is not exactly 2 players */}
-          <button className="btn waves-effect">Start Game</button>
+          <p>Game will begin when all players are ready</p>
+          {readyButton}
         </div>
       </div>
     );
