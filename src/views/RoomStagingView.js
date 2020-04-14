@@ -5,7 +5,7 @@
 */
 
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { siteLink, endpoint, loadUser, loadTeam, socket } from '../App';
 
@@ -15,6 +15,7 @@ class RoomStagingView extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      redirect: false,
       roomId: '',
       team1: '',
       team2: '',
@@ -24,7 +25,6 @@ class RoomStagingView extends Component {
     };
 
     this.handleReadyClick = this.handleReadyClick.bind(this);
-    // TODO need to redirect to in progress game if the room has already started
   }
 
   componentDidMount() {
@@ -33,16 +33,20 @@ class RoomStagingView extends Component {
       this.setState({ team1: team1, team2: team2 });
     });
 
+    socket.on('room-ready', (roomId) => {
+      this.setState({ redirect: true });
+    });
+
     // Retrieve the current room
-    axios.get(`${endpoint}/api/room/staging/${this.props.match.params.roomId}`)
+    axios.get(`${endpoint}/api/room/${this.props.match.params.roomId}`)
     .then((res) => {
       if (res.data.status == "success") {
         this.setState({ 
           roomId: res.data.room.short_id,
           team1: res.data.room.team1,
-          team2: res.data.room.team2
+          team2: res.data.room.team2,
+          redirect: res.data.room.isActive
         });
-        console.log(this.state);
         socket.emit('join-room', res.data.room.short_id);
       }
       else {
@@ -72,7 +76,6 @@ class RoomStagingView extends Component {
       'teamId': this.state.userTeamId,
       'playerNum': this.state.userPlayer
     };
-    console.log(readyRequest); 
     axios.post(`${endpoint}/api/team/ready`, readyRequest)
     .then((res) => {
       console.log(res); 
@@ -83,6 +86,10 @@ class RoomStagingView extends Component {
   }
 
   render() {
+    if (this.state.redirect) {
+      return(<Redirect to={{ pathname:`/room/${this.state.roomId}` }}></Redirect>);
+    }
+
     if (this.state.room == '') {
       return(
         <div className="container">

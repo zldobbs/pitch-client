@@ -17,6 +17,7 @@ import LandingView from './views/LandingView';
 import LoginView from './views/LoginView'; 
 import MissingView from './views/MissingView';
 import RegisterView from './views/RegisterView'; 
+import RoomGameView from './views/RoomGameView';
 import RoomStagingView from './views/RoomStagingView'; 
 
 class App extends Component {
@@ -36,6 +37,7 @@ class App extends Component {
           <Route exact path="/help" component={HelpView}></Route>
           <Route exact path="/login" component={LoginView}></Route>
           <Route exact path="/register" component={RegisterView}></Route>
+          <Route exact path="/room/:roomId" component={RoomGameView}></Route>
           <Route exact path="/room/staging/:roomId" component={RoomStagingView}></Route>
           {/* default case */}
           <Route component={MissingView}></Route>

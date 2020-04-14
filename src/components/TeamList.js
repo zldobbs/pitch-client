@@ -101,11 +101,13 @@ class TeamList extends Component {
         if (this.props.team.player1Ready == true) {
           return(<i className="tiny material-icons green-text">check</i>);
         }
+        break;
       }
       case 2: {
         if (this.props.team.player2Ready == true) {
           return(<i className="tiny material-icons green-text">check</i>);
         }
+        break;
       }
       default:
         return(<span></span>);
