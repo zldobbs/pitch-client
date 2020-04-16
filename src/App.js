@@ -7,8 +7,7 @@ import axios from 'axios';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-// components 
-import Navbar from './components/Navbar'; 
+// components
 import ScrollToTop from './components/ScrollToTop'; 
 
 // views 
@@ -29,8 +28,6 @@ class App extends Component {
   return (
     <BrowserRouter>
     <div className="container-fluid">
-      <Navbar></Navbar>
-      
       <ScrollToTop>
         <Switch>
           <Route exact path="/" component={LandingView}></Route>

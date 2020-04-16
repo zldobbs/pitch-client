@@ -148,6 +148,11 @@ class RoomStagingView extends Component {
           <p>Game will begin when all players are ready</p>
           {readyButton}
         </div>
+        <div className="row">
+          <div className="col s4 m4 offset-m4 center-align">
+            <p><Link to="/">Home</Link></p>
+          </div>
+        </div>
       </div>
     );
   }

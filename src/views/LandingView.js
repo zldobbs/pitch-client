@@ -92,7 +92,7 @@ class LandingView extends Component {
               the <Link to="/help">Help</Link> page
             </p>
             <p>
-              Login to keep stats on your account, or play as anonymous user.
+              <Link to="/login">Login</Link> to keep stats on your account, or play as anonymous user.
             </p>
             <p><i>This game requires cookies to play. Please understand and consent to this if you wish to play!</i></p>
           </div>

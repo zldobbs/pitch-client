@@ -13,6 +13,8 @@
 html {
   color: #FFFFFF;
   background-color: #453B40; 
+  max-height: 100vh;
+  overflow-y: hidden;
 }
 
 .row {
@@ -46,4 +48,75 @@ input {
 
 .collection-item {
   color: #000000; 
+}
+
+.player-zone-col {
+  height: 60vh; 
+}
+
+.player-zone {
+  height: 30%;
+  margin-bottom: 10px;
+  margin-top: 10px; 
+}
+
+.user-zone-col {
+  height: 40vh;
+}
+
+.user-zone {
+  height: 100%;
+}
+
+.card-row {
+  width: 100%; 
+}
+
+.card-col {
+  display: inline-block; 
+  margin: 0 auto; 
+}
+
+.team-score-roster p {
+  margin: 0; 
+  font-size: 0.8rem;
+}
+
+.team-score .col {
+  display: inline-block;
+  height: 100%; 
+  padding: 0; 
+}
+
+.team-score-points p {
+  margin: 0;
+  font-size: 2rem; 
+}
+
+/* Specific rules to be applied to sm */
+@media only screen and (max-width: 600px) {
+  /* Card size: width = ceil( height * 0.654 ) */
+  .card-img {
+    height: 100px;
+    width: 62.5px;
+  }
+
+  .card-img-small {
+    height: 25px;
+    width: 16px;
+  }
+}
+
+/* Specific rules to be applied to md, lg, ... */
+@media only screen and (min-width: 601px) {
+  /* Card size: width = ceil( height * 0.654 ) */
+  .card-img {
+    height: 200px;
+    width: 130px;
+  }
+
+  .card-img-small {
+    height: 66.66px;
+    width: 43.29px;
+  }
 }

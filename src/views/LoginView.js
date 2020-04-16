@@ -121,6 +121,11 @@ class LoginView extends Component {
             <p>Need an account? <Link to="/register">Click here to register.</Link></p>
           </div>
         </div>
+        <div className="row">
+          <div className="col s4 m4 offset-m4 center-align">
+            <p><Link to="/">Home</Link></p>
+          </div>
+        </div>
       </div>
     );
   }

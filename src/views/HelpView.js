@@ -16,6 +16,11 @@ class HelpView extends Component {
             <h3>How to play pitch</h3>
           </div>
         </div>
+        <div className="row">
+          <div className="col s4 m4 offset-m4 center-align">
+            <p><Link to="/">Home</Link></p>
+          </div>
+        </div>
       </div>
     );
   }

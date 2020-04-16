@@ -133,6 +133,11 @@ class RegisterView extends Component {
             <p>Already have an account? <Link to="/login">Click here to login.</Link></p>
           </div>
         </div>
+        <div className="row">
+          <div className="col s4 m4 offset-m4 center-align">
+            <p><Link to="/">Home</Link></p>
+          </div>
+        </div>
       </div>
     );
   }
