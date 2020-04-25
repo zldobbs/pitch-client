@@ -27,7 +27,7 @@ class RegisterView extends Component {
   }
 
   verifyRegisterAttempt() {
-    if (this.state.userNameVal == '' || this.state.passwordVal == '' || this.state.confirmPasswordVal == '') {
+    if (this.state.userNameVal === '' || this.state.passwordVal === '' || this.state.confirmPasswordVal === '') {
       return false; 
     }
     else {
@@ -38,7 +38,7 @@ class RegisterView extends Component {
   // send register attempt to be authenticated
   handleRegisterSubmit(e) {
       e.preventDefault();
-      if (this.verifyRegisterAttempt() == false) {
+      if (this.verifyRegisterAttempt() === false) {
         this.setState({ errorText: 'Missing required fields' });
         return; 
       }

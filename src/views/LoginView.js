@@ -25,7 +25,7 @@ class LoginView extends Component {
   }
 
   verifyLoginAttempt() {
-    if (this.state.userNameVal == '' || this.state.passwordVal == '') {
+    if (this.state.userNameVal === '' || this.state.passwordVal === '') {
       return false; 
     }
     else {
@@ -36,7 +36,7 @@ class LoginView extends Component {
   // send login attempt to be authenticated
   handleLoginSubmit(e) {
       e.preventDefault();
-      if (this.verifyLoginAttempt() == false) {
+      if (this.verifyLoginAttempt() === false) {
         this.setState({ errorText: 'Missing required fields' });
         return; 
       }

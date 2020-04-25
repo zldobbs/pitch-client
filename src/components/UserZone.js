@@ -13,13 +13,13 @@ class UserZone extends Component {
     render() {
         // Need to update the number of cards we are displaying based on how many user has left 
         let cards = [];
-        for (let i = 0; i < this.props.hand.length; i++) {
-          cards.push(<Card key={i} cardNum={this.props.hand[i]}></Card>);
+        for (let i = 0; i < this.props.player.hand.length; i++) {
+          cards.push(<Card key={i} cardNum={this.props.player.hand[i]}></Card>);
         }
 
         return(
             <div className="col s12 grey center-align z-depth-3 user-zone">
-              <p>{this.props.name}</p>
+              <p>{this.props.player.displayName}</p>
               <div className="card-row">
                 {cards}
               </div>

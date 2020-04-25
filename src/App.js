@@ -3,7 +3,6 @@ import './App.css';
 
 // packages 
 import socketIOClient from 'socket.io-client';
-import axios from 'axios';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
@@ -72,18 +71,16 @@ export const loadUser = () => {
   return user;
 }
 
-export const joinTeam = (teamInfo) => {
-  Cookies.set('team', teamInfo, {expires: 1});
+export const savePlayerId = (playerId) => {
+  Cookies.set('playerId', playerId, {expires: 1});
   window.location.reload();
 }
 
-export const leaveTeam = () => {
-  Cookies.remove('team');
+export const deletePlayerId = () => {
+  Cookies.remove('playerId');
   window.location.reload();
 }
 
-export const loadTeam = () => {
-  let teamInfo = Cookies.get('team');
-  teamInfo = (teamInfo == undefined ? undefined : teamInfo.split(','));
-  return teamInfo; 
+export const loadPlayerId = () => {
+  return Cookies.get('playerId');
 }

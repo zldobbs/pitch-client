@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios'; 
-import { loadUser, endpoint } from '../App';
+import { endpoint } from '../App';
 
 class LandingView extends Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class LandingView extends Component {
   createNewRoom() {
     axios.post(`${endpoint}/api/room`)
     .then((res) => {
-        if (res.data.status == "success") {
+        if (res.data.status === "success") {
             this.setState({ redirectTo: `/room/staging/${res.data.room.short_id}` });
         }
         else {
@@ -45,7 +45,7 @@ class LandingView extends Component {
     e.preventDefault(); 
     axios.get(`${endpoint}/api/room/staging/${this.state.joinRoomVal}`)
     .then((res) => {
-      if (res.data.status == "success") {
+      if (res.data.status === "success") {
         this.setState({ redirectTo: `/room/staging/${res.data.room.short_id}` });
       }
       else {

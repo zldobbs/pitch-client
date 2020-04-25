@@ -9,131 +9,75 @@ import React, { Component } from 'react';
 // Design imports
 import '../App.css';
 
-import { Link } from 'react-router-dom';
-import { endpoint, loadUser, joinTeam, leaveTeam, loadTeam } from '../App';
+import { endpoint, loadUser, loadPlayerId, savePlayerId, deletePlayerId } from '../App';
 import axios from 'axios'; 
 
 class TeamList extends Component {
   constructor(props) {
     super(props); 
-    this.state = {
-      userTeamId: '',
-      userPlayer: ''
-    }
 
     this.onClickJoinTeam = this.onClickJoinTeam.bind(this);
     this.onClickLeaveTeam = this.onClickLeaveTeam.bind(this);
     this.getPlayer = this.getPlayer.bind(this); 
   }
 
-  componentDidMount() {
-    let teamInfo = loadTeam();
-    if (teamInfo != undefined) {
-      this.setState({
-        userTeamId: teamInfo[0], 
-        userPlayer: teamInfo[1]
-      });
-    }
-  }
-
   async onClickJoinTeam() {
+    // Send player ID to the backend, if one exists. 
+    // This will remove a player from an existing team if needed 
     let joinTeamRequest = {
       'teamId': this.props.team._id, 
-      'user': loadUser()
+      'user': loadUser(),
+      'playerId': loadPlayerId()
     };
-
-    // If user is already on a team leave that team first 
-    let teamInfo = loadTeam();
-    if (teamInfo != undefined) {
-      let leaveTeamRequest = {
-        'teamId': teamInfo[0], 
-        'playerNum': teamInfo[1],
-        'user': loadUser()
-      };
-      await axios.post(`${endpoint}/api/team/leave`, leaveTeamRequest);
-    }
 
     axios.post(`${endpoint}/api/team/join`, joinTeamRequest)
     .then((res) => {
-      if (res.data.status == "success") {
-        // Save the teamId and player number as a cookie (one object)
-        // This will be useful identifier since the socket id changes on reloads 
-        // NOTE: will need to remove whenever the user leaves the team/room (or switches teams!!!)
-        let teamInfo = `${this.props.team._id},${res.data.playerTaken}`;
-        joinTeam(teamInfo);
+      if (res.data.status === "success") {
+        savePlayerId(res.data.player._id);
       }
       else {
-        // TODO handle error
-        console.log(res.data); 
+        console.log(res.data.details); 
       }
     })
     .catch((err) => {
-      // TODO handle error
       console.log(err); 
     });
   }
 
   onClickLeaveTeam() {
-    let leaveTeamRequest = {
-      'teamId': this.props.team._id, 
-      'playerNum': this.state.userPlayer,
-      'user': loadUser()
-    };
+    let leaveTeamRequest = { 'playerId': loadPlayerId() };
     axios.post(`${endpoint}/api/team/leave`, leaveTeamRequest)
     .then((res) => {
-      if (res.data.status == "success") {
-        leaveTeam();
-      }
-      else {
-        // TODO handle error
-        console.log(res.data); 
+      if (res.data.status === "success") {
+        deletePlayerId();
       }
     })
     .catch((err) => {
-      // TODO handle error
       console.log(err); 
     });
-  }
-
-  getReadyIcon(num) {
-    switch(num) {
-      case 1: {
-        if (this.props.team.player1Ready == true) {
-          return(<i className="tiny material-icons green-text">check</i>);
-        }
-        break;
-      }
-      case 2: {
-        if (this.props.team.player2Ready == true) {
-          return(<i className="tiny material-icons green-text">check</i>);
-        }
-        break;
-      }
-      default:
-        return(<span></span>);
-    }
-
-    return(<span></span>);
   }
 
   getPlayer(num) {
     switch(num) {
       case 1: {
-        if (this.state.userTeamId == this.props.team._id && this.state.userPlayer == 'player1') {
-          return(<li className="collection-item"><i className="tiny material-icons">star</i> {this.props.team.player1DisplayName ? this.props.team.player1DisplayName : '...'}{this.getReadyIcon(1)}</li>);
+        if (this.props.team.player1 === null) {
+          return(<li className="collection-item">...</li>);
         }
         else {
-          return(<li className="collection-item">{this.props.team.player1DisplayName ? this.props.team.player1DisplayName : '...'}{this.getReadyIcon(1)}</li>);
+          const starIcon = (this.props.team.player1._id === this.props.player._id ? (<i className="tiny material-icons">star</i>) : '');
+          const readyIcon = (this.props.team.player1.isReady ? (<i className="tiny material-icons green-text">check</i>) : '');
+          return(<li className="collection-item">{starIcon} {this.props.team.player1.displayName} {readyIcon}</li>);
         }
       }
       case 2: {
-        if (this.state.userTeamId == this.props.team._id && this.state.userPlayer == 'player2') {
-          return(<li className="collection-item"><i className="tiny material-icons">star</i> {this.props.team.player2DisplayName ? this.props.team.player2DisplayName : '...'}{this.getReadyIcon(2)}</li>);
+        if (this.props.team.player2 === null) {
+          return(<li className="collection-item">...</li>);
         }
         else {
-          return(<li className="collection-item">{this.props.team.player2DisplayName ? this.props.team.player2DisplayName : '...'}{this.getReadyIcon(2)}</li>);
+          const starIcon = (this.props.team.player2._id === this.props.player._id ? (<i className="tiny material-icons">star</i>) : '');
+          const readyIcon = (this.props.team.player2.isReady ? (<i className="tiny material-icons green-text">check</i>) : '');
+          return(<li className="collection-item">{starIcon} {this.props.team.player2.displayName} {readyIcon}</li>);
         }
-
       }
       default: 
         return(<li className="collection-item">...</li>);
@@ -141,12 +85,22 @@ class TeamList extends Component {
   }
 
   render() {
+    if (this.props.player === undefined || this.props.team === undefined) {
+      return(
+        <div className="col s12 m6">
+          <p>Loading team info...</p>
+        </div>
+      );
+    } 
+
     let teamButton;
-    if (this.state.userTeamId == this.props.team._id) {
+    if (this.props.player !== {} &&
+      ((this.props.team.player1 !== null && this.props.team.player1._id === this.props.player._id) || 
+       (this.props.team.player2 !== null && this.props.team.player2._id === this.props.player._id))) {
       teamButton = (<button onClick={this.onClickLeaveTeam} className="btn waves-effect red">Leave {this.props.team.name}</button>);
     }
     else {
-      if (this.props.team.player1 != null && this.props.team.player2 != null) {
+      if (this.props.team.player1 !== null && this.props.team.player2 !== null) {
         teamButton = (<p>Team is full</p>);
       }
       else {

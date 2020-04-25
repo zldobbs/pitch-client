@@ -22,7 +22,7 @@ class PlayerZone extends Component {
 
         return(
             <div className="col s12 grey center-align z-depth-3 player-zone">
-              <p>{this.props.name}</p>
+              <p>{this.props.player.displayName}</p>
               <div className="card-row">
                 {cards}
               </div>
