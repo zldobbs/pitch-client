@@ -8,6 +8,9 @@
     Orange: #FF9009;
     Light Orange: #FFA537;
     Yellow: #FFE509; 
+    
+    Red (Team 1 Color): #FF2716;
+    Blue (Team 2 Color): #1191A3;
 */
 
 html {
@@ -50,6 +53,11 @@ input {
   color: #000000; 
 }
 
+.colored-z-depth-3 {
+  -webkit-box-shadow: 0 3px 14px 2px rgba(255, 247, 0, 0.7), 0 -3px 14px 2px rgba(255, 247, 0, 0.7), 0 3px 14px 2px rgba(255, 247, 0, 0.7);
+          box-shadow: 0 3px 14px 2px rgba(255, 247, 0, 0.7), 0 -3px 14px 2px rgba(255, 247, 0, 0.7), 0 3px 14px 2px rgba(255, 247, 0, 0.7);
+}
+
 .player-zone-col {
   height: 60vh; 
 }
@@ -66,6 +74,14 @@ input {
 
 .user-zone {
   height: 100%;
+}
+
+.team-1-color {
+  background-color: #FF584B;
+}
+
+.team-2-color {
+  background-color: #1191A3;
 }
 
 .card-row {

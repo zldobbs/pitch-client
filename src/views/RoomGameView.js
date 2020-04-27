@@ -23,6 +23,8 @@ class RoomGameView extends Component {
       playerId: '',
       player: {}
     }
+
+    this.getAssignedTeam = this.getAssignedTeam.bind(this); 
   }
 
   componentDidMount() {
@@ -35,7 +37,6 @@ class RoomGameView extends Component {
           playerId: loadPlayerId()
         });
 
-        // Get the player if the user is signed in 
         if (this.state.playerId) {
           axios.get(`${endpoint}/api/player/${this.state.playerId}`)
           .then((res) => {
@@ -54,6 +55,20 @@ class RoomGameView extends Component {
     });
   }
 
+  getAssignedTeam(player) {
+    // Get the team the player is on 
+    if (this.state.room.team1.player1._id === player._id || this.state.room.team1.player2._id === player._id) {
+      return 1; 
+    }
+    else if (this.state.room.team2.player1._id === player._id || this.state.room.team2.player2._id === player._id) {
+      return 2; 
+    }
+    else {
+      console.log("Error: Player ID does not match any team members");
+      return -1; 
+    }
+  }
+
   render() {
     if (!this.state.room._id || !this.state.player._id) {
       return(
@@ -69,7 +84,7 @@ class RoomGameView extends Component {
 
     let players = [];
     // Player order should always go opposite team player 1, same team player 2, opposite team player 2
-    if (this.state.room.team1.player1._id === this.state.playerId || this.state.room.team1.player2._id === this.state.playerId) {
+    if (this.getAssignedTeam(this.state.player) === 1) {
       // User is on team 1 
       players = [
         this.state.room.team2.player1, 
@@ -77,7 +92,7 @@ class RoomGameView extends Component {
         this.state.room.team2.player2
       ];
     }
-    else if (this.state.room.team2.player1._id === this.state.playerId || this.state.room.team2.player2._id === this.state.playerId) {
+    else if (this.getAssignedTeam(this.state.player) === 2) {
       // User is on team 2
       players = [
         this.state.room.team1.player1, 
@@ -95,20 +110,20 @@ class RoomGameView extends Component {
         <div className="row player-zone-col">
           <div className="col s4">
             <div className="row">
-              <PlayerZone player={players[0]}></PlayerZone>
-              <PlayerZone player={players[1]}></PlayerZone>
-              <PlayerZone player={players[2]}></PlayerZone>
+              <PlayerZone player={players[0]} team={this.getAssignedTeam(players[0])} activePlayer={this.state.room.activeGame.activePlayer}></PlayerZone>
+              <PlayerZone player={players[1]} team={this.getAssignedTeam(players[1])} activePlayer={this.state.room.activeGame.activePlayer}></PlayerZone>
+              <PlayerZone player={players[2]} team={this.getAssignedTeam(players[2])} activePlayer={this.state.room.activeGame.activePlayer}></PlayerZone>
             </div>
           </div>
           <div className="col s8">
             <div className="row team-score-col">
-              <TeamScore team={this.state.room.team1}></TeamScore>
-              <TeamScore team={this.state.room.team2}></TeamScore>
+              <TeamScore team={this.state.room.team1} teamNum={1}></TeamScore>
+              <TeamScore team={this.state.room.team2} teamNum={2}></TeamScore>
             </div>
           </div>
         </div>
         <div className="row user-zone-col">
-          <UserZone player={this.state.player}></UserZone>
+          <UserZone player={this.state.player} team={this.getAssignedTeam(this.state.player)} activePlayer={this.state.room.activeGame.activePlayer}></UserZone>
         </div>
       </div>
 
