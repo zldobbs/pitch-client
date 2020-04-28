@@ -39,6 +39,10 @@ class RoomStagingView extends Component {
     axios.get(`${endpoint}/api/room/${this.props.match.params.roomId}`)
     .then((res) => {
       if (res.data.status === "success") {
+        if (res.data.room.activeGame !== null) {
+          this.setState({ redirect: true, room: res.data.room });
+          return; 
+        }
         this.setState({ 
           room: res.data.room,
           user: loadUser(), 

@@ -105,6 +105,49 @@ class RoomGameView extends Component {
       return(<Redirect to="/"></Redirect>);
     }
 
+    let suitTag = "???"; 
+    let suitImg = "red_back.png";
+    let biddingTag = (<p>Noone has set the bid yet</p>);
+    if (this.state.room.activeGame.bid > 0) {
+      if (this.state.room.activeGame.suit >= 0) {
+        switch (this.state.room.activeGame.suit) {
+          case 0: {
+            suitTag = "Clubs";
+            suitImg = "honor_clubs.png";
+            break;
+          }
+          case 1: {
+            suitTag = "Diamonds";
+            suitImg = "honor_diamond.png";
+            break;
+          }
+          case 2: {
+            suitTag = "Hearts";
+            suitImg = "honor_heart.png";
+            break;
+          }
+          case 3: {
+            suitTag = "Spades";
+            suitImg = "honor_spade.png";
+            break;
+          }
+          default: {
+            console.log("Error: Could not set a suit: " + this.state.room.activeGame.suit); 
+            break; 
+          }
+        }
+        biddingTag = (
+          <div>
+            <p>{this.state.room.activeGame.biddingTeam} set bid at {this.state.room.activeGame.bid} in {suitTag}</p>
+            <img src={"../assets/img/cards/" + suitImg} alt={suitTag} />
+          </div>
+        );
+      }
+      else {
+        biddingTag = (<p>{this.state.room.activeGame.biddingTeam} holds the bid at {this.state.room.activeGame.bid}</p>);
+      }
+    }
+
     return(
       <div className="container-fluid">
         <div className="row player-zone-col">
@@ -119,6 +162,22 @@ class RoomGameView extends Component {
             <div className="row team-score-col">
               <TeamScore team={this.state.room.team1} teamNum={1}></TeamScore>
               <TeamScore team={this.state.room.team2} teamNum={2}></TeamScore>
+            </div>
+            <div className="row">
+              <div className="col s12 center-align">
+                {biddingTag}
+              </div>
+            </div>
+            <div className="row">
+              <div className="col s12 m10 offset-m1 center-align">
+                <h5>{this.state.room.roomStatus}</h5>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col s12 center-align">
+                <p>Place the cards that users have played here. Make sure to denote who played the card, what the current suit is, and team colors surrounding the card.</p>
+                <p>Need buttons to fit somewhere. Probably use alerts or danger banners for invalid actions.</p>
+              </div>
             </div>
           </div>
         </div>
