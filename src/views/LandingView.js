@@ -43,7 +43,7 @@ class LandingView extends Component {
   // join the given Room 
   joinRoom(e) {
     e.preventDefault(); 
-    axios.get(`${endpoint}/api/room/staging/${this.state.joinRoomVal}`)
+    axios.get(`${endpoint}/api/room/${this.state.joinRoomVal}`)
     .then((res) => {
       if (res.data.status === "success") {
         this.setState({ redirectTo: `/room/staging/${res.data.room.short_id}` });

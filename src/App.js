@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import M from 'materialize-css';
 import './App.css';
 
 // packages 
@@ -20,7 +21,8 @@ import RoomStagingView from './views/RoomStagingView';
 
 class App extends Component {
   componentDidMount() {
-  window.scrollTo(0, 0);
+    M.AutoInit();
+    window.scrollTo(0, 0);
   }
 
   render() {

@@ -9,6 +9,7 @@ import { Redirect } from 'react-router-dom';
 import axios from 'axios'; 
 import { endpoint, loadPlayerId, loadUser } from '../App';
 
+import ButtonRow from '../components/ButtonRow'; 
 import PlayerZone from '../components/PlayerZone';
 import UserZone from '../components/UserZone';
 import TeamScore from '../components/TeamScore';
@@ -25,6 +26,7 @@ class RoomGameView extends Component {
     }
 
     this.getAssignedTeam = this.getAssignedTeam.bind(this); 
+    this.getBiddingTag = this.getBiddingTag.bind(this); 
   }
 
   componentDidMount() {
@@ -69,42 +71,7 @@ class RoomGameView extends Component {
     }
   }
 
-  render() {
-    if (!this.state.room._id || !this.state.player._id) {
-      return(
-        <div className="row center-align">
-          <p>Loading room...</p>
-        </div>
-      );
-    }
-
-    if (this.state.redirect) {
-      return(<Redirect to="/"></Redirect>);
-    }
-
-    let players = [];
-    // Player order should always go opposite team player 1, same team player 2, opposite team player 2
-    if (this.getAssignedTeam(this.state.player) === 1) {
-      // User is on team 1 
-      players = [
-        this.state.room.team2.player1, 
-        (this.state.playerId === this.state.room.team1.player1._id ? this.state.room.team1.player2 : this.state.room.team1.player1),
-        this.state.room.team2.player2
-      ];
-    }
-    else if (this.getAssignedTeam(this.state.player) === 2) {
-      // User is on team 2
-      players = [
-        this.state.room.team1.player1, 
-        (this.state.playerId === this.state.room.team2.player1._id ? this.state.room.team2.player2 : this.state.room.team2.player1),
-        this.state.room.team1.player2
-      ];
-    }
-    else {
-      // User is not on either team 
-      return(<Redirect to="/"></Redirect>);
-    }
-
+  getBiddingTag() {
     let suitTag = "???"; 
     let suitImg = "red_back.png";
     let biddingTag = (<p>Noone has set the bid yet</p>);
@@ -147,6 +114,44 @@ class RoomGameView extends Component {
         biddingTag = (<p>{this.state.room.activeGame.biddingTeam} holds the bid at {this.state.room.activeGame.bid}</p>);
       }
     }
+    return biddingTag; 
+  }
+
+  render() {
+    if (!this.state.room._id || !this.state.player._id) {
+      return(
+        <div className="row center-align">
+          <p>Loading room...</p>
+        </div>
+      );
+    }
+
+    if (this.state.redirect) {
+      return(<Redirect to="/"></Redirect>);
+    }
+
+    let players = [];
+    // Player order should always go opposite team player 1, same team player 2, opposite team player 2
+    if (this.getAssignedTeam(this.state.player) === 1) {
+      // User is on team 1 
+      players = [
+        this.state.room.team2.player1, 
+        (this.state.playerId === this.state.room.team1.player1._id ? this.state.room.team1.player2 : this.state.room.team1.player1),
+        this.state.room.team2.player2
+      ];
+    }
+    else if (this.getAssignedTeam(this.state.player) === 2) {
+      // User is on team 2
+      players = [
+        this.state.room.team1.player1, 
+        (this.state.playerId === this.state.room.team2.player1._id ? this.state.room.team2.player2 : this.state.room.team2.player1),
+        this.state.room.team1.player2
+      ];
+    }
+    else {
+      // User is not on either team 
+      return(<Redirect to="/"></Redirect>);
+    }
 
     return(
       <div className="container-fluid">
@@ -158,25 +163,30 @@ class RoomGameView extends Component {
               <PlayerZone player={players[2]} team={this.getAssignedTeam(players[2])} activePlayer={this.state.room.activeGame.activePlayer}></PlayerZone>
             </div>
           </div>
+          {/* TODO Will need to be careful managing screen heights here... */}
           <div className="col s8">
-            <div className="row team-score-col">
+            <div className="row">
               <TeamScore team={this.state.room.team1} teamNum={1}></TeamScore>
               <TeamScore team={this.state.room.team2} teamNum={2}></TeamScore>
             </div>
-            <div className="row">
+            <div className="row no-margin-bottom">
               <div className="col s12 center-align">
-                {biddingTag}
+                {this.getBiddingTag()}
               </div>
             </div>
-            <div className="row">
+            <div className="row no-margin-bottom">
               <div className="col s12 m10 offset-m1 center-align">
-                <h5>{this.state.room.roomStatus}</h5>
+                <p>{this.state.room.roomStatus}</p>
               </div>
             </div>
             <div className="row">
               <div className="col s12 center-align">
-                <p>Place the cards that users have played here. Make sure to denote who played the card, what the current suit is, and team colors surrounding the card.</p>
-                <p>Need buttons to fit somewhere. Probably use alerts or danger banners for invalid actions.</p>
+                {/* TODO Display cards that have been played here */}
+              </div>
+            </div>
+            <div className="row">
+              <div className="col s10 push-s1 m6 push-m3 center-align">
+                <ButtonRow player={this.state.player} activePlayer={this.state.room.activeGame.activePlayer} bid={this.state.room.activeGame.bid} suit={this.state.room.activeGame.suit}></ButtonRow>
               </div>
             </div>
           </div>
