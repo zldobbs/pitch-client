@@ -17,8 +17,10 @@ class ButtonRow extends Component {
   }
 
   componentDidMount() {
+    // FIXME Updated activePlayer is not making it's way here...
     // Check if user is up to do something 
     if (this.props.activePlayer._id !== this.props.player._id) {
+      this.setState({ display: (<span></span>)});
       return; 
     }
 

@@ -29,7 +29,7 @@ class RoomStagingView extends Component {
   componentDidMount() {
     socket.on('room-update', (room) => {
       this.setState({ room: room });
-    })
+    });
 
     socket.on('room-ready', (roomId) => {
       this.setState({ redirect: true });

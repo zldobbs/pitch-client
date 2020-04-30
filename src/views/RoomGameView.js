@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios'; 
-import { endpoint, loadPlayerId, loadUser } from '../App';
+import { endpoint, loadPlayerId, loadUser, socket } from '../App';
 
 import ButtonRow from '../components/ButtonRow'; 
 import PlayerZone from '../components/PlayerZone';
@@ -30,6 +30,11 @@ class RoomGameView extends Component {
   }
 
   componentDidMount() {
+    socket.on('room-update', (room) => {
+      console.log(room); 
+      this.setState({ room: room });
+    });
+
     axios.get(`${endpoint}/api/room/${this.props.match.params.roomId}`)
     .then((res) => {
       if (res.data.status === "success") {
@@ -47,6 +52,7 @@ class RoomGameView extends Component {
             console.log(err); 
           })
         }
+        socket.emit('join-room', res.data.room.short_id);
       }
       else {
         this.setState({ redirect: true });
@@ -105,13 +111,13 @@ class RoomGameView extends Component {
         }
         biddingTag = (
           <div>
-            <p>{this.state.room.activeGame.biddingTeam} set bid at {this.state.room.activeGame.bid} in {suitTag}</p>
+            <p>{this.state.room.activeGame.biddingPlayer.displayName} set bid at {this.state.room.activeGame.bid} in {suitTag}</p>
             <img src={"../assets/img/cards/" + suitImg} alt={suitTag} />
           </div>
         );
       }
       else {
-        biddingTag = (<p>{this.state.room.activeGame.biddingTeam} holds the bid at {this.state.room.activeGame.bid}</p>);
+        biddingTag = (<p>{this.state.room.activeGame.biddingPlayer.displayName} holds the bid at {this.state.room.activeGame.bid}</p>);
       }
     }
     return biddingTag; 

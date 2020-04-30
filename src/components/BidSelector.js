@@ -5,24 +5,65 @@
 */
 
 import React, { Component } from 'react';
+import axios from 'axios';
 import M from 'materialize-css';
+import { endpoint, loadPlayerId } from '../App';
 
 class BidSelector extends Component {
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      startBid: (this.props.bid === 0 ? 5 : this.props.bid + 1),
+      bidValue: (this.props.bid === 0 ? 5 : this.props.bid + 1)
+    }
+
+    this.handleBidChange = this.handleBidChange.bind(this); 
+    this.setBid = this.setBid.bind(this); 
+    this.passBid = this.passBid.bind(this); 
+  }
+  
   componentDidMount() {
+    // Initialize materialize select dropdown
     M.AutoInit();
   }
 
+  handleBidChange(e) {
+    e.preventDefault(); 
+    this.setState({ bidValue: e.target.value });
+  }
+
+  setBid() {
+    let bidAttempt = {
+      bid: this.state.bidValue,
+      player: loadPlayerId()
+    };
+    axios.post(`${endpoint}/api/game/setBid`, bidAttempt)
+    .then((res) => {
+      if (res.data.status === "error") {
+        console.log(res.data); 
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
+  passBid() {
+    axios.post(`${endpoint}/api/game/passBid`, { player: loadPlayerId() })
+    .then((res) => {
+      if (res.data.status === "error") {
+        console.log(res.data); 
+      }
+    })
+    .catch((err) => {
+      console.log(err); 
+    });
+  }
+
   render() {
-    /*
-      Plan of attack...
-      - Set/hit -> send request to server with details
-      - Update game state accordingly 
-      - Socket emit the updated game state to all players
-      --> An additional socket may be needed to update the status message (or can we do this in a single emit..?)
-    */
-    let startBid = (this.props.bid === 0 ? 5 : this.props.bid); 
     let selections = [];
-    for (let i = startBid; i <= 10; i++) {
+    for (let i = this.state.startBid; i <= 10; i++) {
       selections.push(<option key={i} value={i}>{i}</option>);
     }
 
@@ -31,15 +72,16 @@ class BidSelector extends Component {
         <p>Set a bid or pass...</p>
         <div className="row">
           <div className="input-field col s4 offset-s2 m6">
-            <select id="bid">
+            <select id="bid" value={this.state.bidValue} onChange={this.handleBidChange}>
               {selections}
             </select>
           </div>
           <div className="col s4 m2">
-            <button className="btn waves-effect">Set</button>
+            <button className="btn waves-effect" onClick={this.setBid}>Set</button>
           </div>
+
           <div className="col s12 m2">
-            <button className="btn waves-effect red">Pass</button>
+            <button className="btn waves-effect red" onClick={this.passBid}>Pass</button>
           </div>
         </div>
       </div>
