@@ -6,37 +6,28 @@
 
 import React, { Component } from 'react';
 import BidSelector from './BidSelector'; 
+import SuitSelector from './SuitSelector'; 
 
 class ButtonRow extends Component {
-  constructor(props) {
-    super(props); 
-  
-    this.state = {
-      display: (<span></span>)
-    }
-  }
-
-  componentDidMount() {
-    // FIXME Updated activePlayer is not making it's way here...
-    // Check if user is up to do something 
-    if (this.props.activePlayer._id !== this.props.player._id) {
-      this.setState({ display: (<span></span>)});
-      return; 
-    }
-
-    // Check if user is up to set the bid 
-    if (this.props.suit === -1) {
-      this.setState({
-        display: (<BidSelector bid={this.props.bid}></BidSelector>)
-      })
-    }
-  }
-
   // TODO will need to render the button to go out at anytime, even if player is not active
   render() {
+    let display = (<span></span>); 
+    if (this.props.activeGame.activePlayer._id === this.props.player._id) {
+      // Check if user is up to set the bid 
+      if (this.props.suit === -1) {
+        // If the active user is the bidder, they must be ready to pick the suit 
+        if (this.props.activeGame.biddingPlayer !== null && this.props.activeGame.activePlayer._id === this.props.activeGame.biddingPlayer._id) {
+          display = (<SuitSelector></SuitSelector>);
+        }
+        else {
+          display = (<BidSelector bid={this.props.bid} dealer={this.props.dealer} activeGame={this.props.activeGame}></BidSelector>);
+        }
+      }
+    }
+
     return(
       <div className="row">
-        {this.state.display}
+        {display}
       </div>
     );
   }

@@ -13,6 +13,10 @@ class BidSelector extends Component {
   constructor(props) {
     super(props);
     
+    // TODO
+    // Need to support 'Shooting the Moon'
+    // Users should always be able to bid 10 or 'Shooting the Moon', 
+    // even if someone else has already bid one of these values
     this.state = {
       startBid: (this.props.bid === 0 ? 5 : this.props.bid + 1),
       bidValue: (this.props.bid === 0 ? 5 : this.props.bid + 1)
@@ -67,9 +71,20 @@ class BidSelector extends Component {
       selections.push(<option key={i} value={i}>{i}</option>);
     }
 
+    let directions = 'Set a bid or pass...';
+    let passBtn = (
+      <div className="col s12 m2">
+        <button className="btn waves-effect red" onClick={this.passBid}>Pass</button>
+      </div>
+    );
+    if (this.props.bid === 0 && this.props.activeGame.activePlayerIndex === this.props.dealer) {
+      directions = 'You are forced to set the bid!'; 
+      passBtn = (<span></span>);
+    }
+
     return(
       <div className="row">
-        <p>Set a bid or pass...</p>
+        <p>{directions}</p>
         <div className="row">
           <div className="input-field col s4 offset-s2 m6">
             <select id="bid" value={this.state.bidValue} onChange={this.handleBidChange}>
@@ -79,10 +94,7 @@ class BidSelector extends Component {
           <div className="col s4 m2">
             <button className="btn waves-effect" onClick={this.setBid}>Set</button>
           </div>
-
-          <div className="col s12 m2">
-            <button className="btn waves-effect red" onClick={this.passBid}>Pass</button>
-          </div>
+          {passBtn}
         </div>
       </div>
     );

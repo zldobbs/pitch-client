@@ -31,7 +31,6 @@ class RoomGameView extends Component {
 
   componentDidMount() {
     socket.on('room-update', (room) => {
-      console.log(room); 
       this.setState({ room: room });
     });
 
@@ -192,7 +191,7 @@ class RoomGameView extends Component {
             </div>
             <div className="row">
               <div className="col s10 push-s1 m6 push-m3 center-align">
-                <ButtonRow player={this.state.player} activePlayer={this.state.room.activeGame.activePlayer} bid={this.state.room.activeGame.bid} suit={this.state.room.activeGame.suit}></ButtonRow>
+                <ButtonRow player={this.state.player} activeGame={this.state.room.activeGame} dealer={this.state.room.dealer} bid={this.state.room.activeGame.bid} suit={this.state.room.activeGame.suit}></ButtonRow>
               </div>
             </div>
           </div>

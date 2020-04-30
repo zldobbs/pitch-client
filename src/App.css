@@ -113,6 +113,15 @@ input {
   margin-bottom: 0; 
 }
 
+.suit-selection-row img, .suit-selection-row p {
+  cursor: pointer; 
+}
+
+.slim-p {
+  margin-top: 0; 
+  margin-bottom: 5px; 
+}
+
 /* Specific rules to be applied to sm */
 @media only screen and (max-width: 600px) {
   /* Card size: width = ceil( height * 0.654 ) */
@@ -124,6 +133,11 @@ input {
   .card-img-small {
     height: 25px;
     width: 16px;
+  }
+
+  .honor-card-img {
+    height: 73.65px;
+    width: 119.7px; 
   }
 }
 
@@ -138,5 +152,10 @@ input {
   .card-img-small {
     height: 66.66px;
     width: 43.29px;
+  }
+
+  .honor-card-img {
+    height: 110.475px;
+    width: 179.55px; 
   }
 }
