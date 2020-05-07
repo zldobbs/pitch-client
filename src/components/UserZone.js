@@ -20,7 +20,7 @@ class UserZone extends Component {
     return(
       <div className={"col s12 center-align z-depth-3 user-zone " + (this.props.team === 1 ? 'team-1-color ' : 'team-2-color ') + (this.props.activePlayer._id === this.props.player._id ? 'colored-z-depth-3' : 'z-depth-3')}>
         <p>{this.props.player.displayName}</p>
-        <div className="card-row">
+        <div className={this.props.player.hand.length > 9 ? "scrolling-card-row" : "card-row"}>
           {cards}
         </div>
       </div>

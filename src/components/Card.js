@@ -32,7 +32,7 @@ class Card extends Component {
         }
 
         return(
-            <div className="card-col">
+            <div className={"card-col " + (this.props.highlight ? "colored-z-depth-3" : "")} onClick={this.props.clickHandler}>
               { cardImage }
             </div>
         );

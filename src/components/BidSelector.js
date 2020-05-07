@@ -92,7 +92,7 @@ class BidSelector extends Component {
             </select>
           </div>
           <div className="col s4 m2">
-            <button className="btn waves-effect" onClick={this.setBid}>Set</button>
+            <button className="btn waves-effect" onClick={this.setBid}>Bid</button>
           </div>
           {passBtn}
         </div>

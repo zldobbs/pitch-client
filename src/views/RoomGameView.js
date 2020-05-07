@@ -10,6 +10,7 @@ import axios from 'axios';
 import { endpoint, loadPlayerId, loadUser, socket } from '../App';
 
 import ButtonRow from '../components/ButtonRow'; 
+import CardPicker from '../components/CardPicker';
 import PlayerZone from '../components/PlayerZone';
 import UserZone from '../components/UserZone';
 import TeamScore from '../components/TeamScore';
@@ -20,6 +21,7 @@ class RoomGameView extends Component {
 
     this.state = {
       redirect: false,
+      showCardPicker: false, 
       room: {}, 
       playerId: '',
       player: {}
@@ -32,6 +34,16 @@ class RoomGameView extends Component {
   componentDidMount() {
     socket.on('room-update', (room) => {
       this.setState({ room: room });
+
+      axios.get(`${endpoint}/api/player/${this.state.playerId}`)
+      .then((res) => {
+        this.setState({ 
+          player: res.data.player,
+          showCardPicker: (res.data.player.cardCount > 6 && this.state.room.activeGame.suit >= 0)
+        });
+      }).catch((err) => {
+        console.log(err); 
+      });
     });
 
     axios.get(`${endpoint}/api/room/${this.props.match.params.roomId}`)
@@ -49,7 +61,7 @@ class RoomGameView extends Component {
             this.setState({ player: res.data.player });
           }).catch((err) => {
             console.log(err); 
-          })
+          });
         }
         socket.emit('join-room', res.data.room.short_id);
       }
@@ -85,22 +97,22 @@ class RoomGameView extends Component {
         switch (this.state.room.activeGame.suit) {
           case 0: {
             suitTag = "Clubs";
-            suitImg = "honor_clubs.png";
+            suitImg = require("../assets/img/cards/honor_clubs.png");
             break;
           }
           case 1: {
             suitTag = "Diamonds";
-            suitImg = "honor_diamond.png";
+            suitImg = require("../assets/img/cards/honor_diamond.png");
             break;
           }
           case 2: {
             suitTag = "Hearts";
-            suitImg = "honor_heart.png";
+            suitImg = require("../assets/img/cards/honor_heart.png");
             break;
           }
           case 3: {
             suitTag = "Spades";
-            suitImg = "honor_spade.png";
+            suitImg = require("../assets/img/cards/honor_spade.png");
             break;
           }
           default: {
@@ -110,8 +122,8 @@ class RoomGameView extends Component {
         }
         biddingTag = (
           <div>
-            <p>{this.state.room.activeGame.biddingPlayer.displayName} set bid at {this.state.room.activeGame.bid} in {suitTag}</p>
-            <img src={"../assets/img/cards/" + suitImg} alt={suitTag} />
+            <p className="slim-p">{this.state.room.activeGame.biddingPlayer.displayName} set bid at {this.state.room.activeGame.bid} in {suitTag}</p>
+            <img className="honor-card-icon" src={suitImg} alt={suitTag} />
           </div>
         );
       }
@@ -160,6 +172,10 @@ class RoomGameView extends Component {
 
     return(
       <div className="container-fluid">
+        {
+          this.state.showCardPicker && 
+          <CardPicker activePlayer={this.state.room.activeGame.activePlayer} suit={this.state.room.activeGame.suit} suitName={this.state.room.activeGame.suitName} hand={this.state.player.hand}></CardPicker>
+        }
         <div className="row player-zone-col">
           <div className="col s4">
             <div className="row">

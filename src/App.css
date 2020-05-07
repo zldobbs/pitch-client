@@ -54,8 +54,32 @@ input {
 }
 
 .colored-z-depth-3 {
+  background-color: rgba(255, 247, 0, 0.7);
   -webkit-box-shadow: 0 3px 14px 2px rgba(255, 247, 0, 0.7), 0 -3px 14px 2px rgba(255, 247, 0, 0.7), 0 3px 14px 2px rgba(255, 247, 0, 0.7);
           box-shadow: 0 3px 14px 2px rgba(255, 247, 0, 0.7), 0 -3px 14px 2px rgba(255, 247, 0, 0.7), 0 3px 14px 2px rgba(255, 247, 0, 0.7);
+}
+
+.dialog {
+  position: absolute; 
+  z-index: 100;
+  width: 90vw; 
+  height: 60vh; 
+  top: 5vh; 
+  left: 5vw;
+  color: #FFFFFF;
+  background-color: #453B40; 
+}
+
+.dialog-backdrop {
+  position: absolute;
+  z-index: 99; 
+  width: 100vw;
+  height: 100vh; 
+  background-color: rgba(0,0,0,0.7);
+}
+
+.dialog .row {
+  margin-bottom: 20px;
 }
 
 .player-zone-col {
@@ -84,13 +108,19 @@ input {
   background-color: #1191A3;
 }
 
-.card-row {
-  width: 100%; 
+.scrolling-card-row {
+  width: 80%;
+  display: inline-block; 
+  position: relative; 
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
 }
 
 .card-col {
   display: inline-block; 
-  margin: 0 auto; 
+  margin: 1.5px;
 }
 
 .team-score-roster p {
@@ -122,12 +152,21 @@ input {
   margin-bottom: 5px; 
 }
 
+.honor-card-icon {
+  height: 55.2375px;
+  width: 89.775px; 
+}
+
 /* Specific rules to be applied to sm */
 @media only screen and (max-width: 600px) {
   /* Card size: width = ceil( height * 0.654 ) */
   .card-img {
     height: 100px;
     width: 62.5px;
+  }
+
+  .card-row {
+    max-height: 140px; 
   }
 
   .card-img-small {
@@ -147,6 +186,10 @@ input {
   .card-img {
     height: 200px;
     width: 130px;
+  }
+
+  .card-row {
+    max-height: 240px; 
   }
 
   .card-img-small {
