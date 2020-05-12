@@ -35,8 +35,8 @@ class CardPicker extends Component {
     }
 
     this.setState({
-      ownedPoints: points,
-      selectedCards: points
+      ownedPoints: points.slice(),
+      selectedCards: points.slice()
     });
   }
 
@@ -60,7 +60,10 @@ class CardPicker extends Component {
   handleCardClick(cardIndex) {
     let { selectedCards } = this.state;
     let selectedCard = this.props.hand[cardIndex];
+    console.log(this.state);
+    console.log(selectedCard);
     if (this.state.ownedPoints.indexOf(selectedCard) >= 0) {
+      console.log('Not deselecting an owned point');
       return; 
     }
 
