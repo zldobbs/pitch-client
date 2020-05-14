@@ -10,6 +10,7 @@ import SuitSelector from './SuitSelector';
 
 class ButtonRow extends Component {
   // TODO will need to render the button to go out at anytime, even if player is not active
+  // Can do this by checking the cards the given player has. Use similar logic as CardPicker...
   render() {
     let display = (<span></span>); 
     if (this.props.activeGame.activePlayer._id === this.props.player._id) {

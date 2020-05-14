@@ -157,6 +157,10 @@ input {
   width: 89.775px; 
 }
 
+.played-card-box {
+  margin: 0 auto;
+}
+
 /* Specific rules to be applied to sm */
 @media only screen and (max-width: 600px) {
   /* Card size: width = ceil( height * 0.654 ) */

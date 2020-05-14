@@ -11,6 +11,7 @@ import { endpoint, loadPlayerId, loadUser, socket } from '../App';
 
 import ButtonRow from '../components/ButtonRow'; 
 import CardPicker from '../components/CardPicker';
+import PlayedCard from '../components/PlayedCard';
 import PlayerZone from '../components/PlayerZone';
 import UserZone from '../components/UserZone';
 import TeamScore from '../components/TeamScore';
@@ -58,7 +59,10 @@ class RoomGameView extends Component {
         if (this.state.playerId) {
           axios.get(`${endpoint}/api/player/${this.state.playerId}`)
           .then((res) => {
-            this.setState({ player: res.data.player });
+            this.setState({ 
+              player: res.data.player,
+              showCardPicker: (res.data.player.cardCount > 6 && this.state.room.activeGame.suit >= 0)
+            });
           }).catch((err) => {
             console.log(err); 
           });
@@ -123,7 +127,7 @@ class RoomGameView extends Component {
         biddingTag = (
           <div>
             <p className="slim-p">{this.state.room.activeGame.biddingPlayer.displayName} set bid at {this.state.room.activeGame.bid} in {suitTag}</p>
-            <img className="honor-card-icon" src={suitImg} alt={suitTag} />
+            {/* <img className="honor-card-icon" src={suitImg} alt={suitTag} /> */}
           </div>
         );
       }
@@ -201,9 +205,10 @@ class RoomGameView extends Component {
               </div>
             </div>
             <div className="row">
-              <div className="col s12 center-align">
-                {/* TODO Display cards that have been played here */}
-              </div>
+              <PlayedCard player={this.state.room.team1.player1} team={1}></PlayedCard>
+              <PlayedCard player={this.state.room.team1.player2} team={1}></PlayedCard>
+              <PlayedCard player={this.state.room.team2.player1} team={2}></PlayedCard>
+              <PlayedCard player={this.state.room.team2.player2} team={2}></PlayedCard>
             </div>
             <div className="row">
               <div className="col s10 push-s1 m6 push-m3 center-align">
