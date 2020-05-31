@@ -53,8 +53,7 @@ class UserZone extends Component {
       this.setState({ selectedCards: selectedCards });
     }
   }
-    
-  // TODO Set the background color based on the team
+
   render() {
     // Need to update the number of cards we are displaying based on how many user has left 
     let cards = [];
