@@ -7,9 +7,9 @@
 import React, { Component } from 'react';
 import BidSelector from './BidSelector'; 
 import SuitSelector from './SuitSelector'; 
+import GoOutButton from './GoOutButton';
 
 class ButtonRow extends Component {
-  // TODO will need to render the button to go out at anytime, even if player is not active
   // Can do this by checking the cards the given player has. Use similar logic as CardPicker...
   render() {
     let display = (<span></span>); 
@@ -26,9 +26,11 @@ class ButtonRow extends Component {
       }
     }
 
+    // Need to check if the user has no on cards left 
     return(
       <div className="row">
         {display}
+        <GoOutButton suit={this.props.suit} player={this.props.player}></GoOutButton>
       </div>
     );
   }

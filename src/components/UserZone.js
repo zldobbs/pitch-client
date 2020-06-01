@@ -40,6 +40,7 @@ class UserZone extends Component {
             console.log(res.data);
           }
           else {
+            // TODO Display an error if user played an invalid suit 
             console.log(res.data.details); 
           }
         })
