@@ -5,6 +5,8 @@
 */
 
 import React, { Component } from 'react';
+import axios from 'axios';
+import { loadPlayerId, endpoint } from '../App';
 
 class GoOutButton extends Component {
   constructor(props) {
@@ -58,7 +60,19 @@ class GoOutButton extends Component {
     // TODO Send request to go out 
     // Check for validity on backend too 
     // Backend should handle if the person going out is the active player or not 
-    console.log("User is going out..");
+    let goOutAttempt = {
+      activePlayer: this.props.activePlayerId,
+      player: loadPlayerId()
+    };
+    axios.post(`${endpoint}/api/game/goOut`, goOutAttempt)
+    .then((res) => {
+      if (res.data.status === "error") {
+        console.log(res.data); 
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   }
 
   // Can do this by checking the cards the given player has. Use similar logic as CardPicker...

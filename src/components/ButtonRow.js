@@ -30,7 +30,7 @@ class ButtonRow extends Component {
     return(
       <div className="row">
         {display}
-        <GoOutButton suit={this.props.suit} player={this.props.player}></GoOutButton>
+        <GoOutButton suit={this.props.suit} player={this.props.player} activePlayerId={this.props.activeGame.activePlayer._id}></GoOutButton>
       </div>
     );
   }

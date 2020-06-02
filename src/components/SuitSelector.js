@@ -21,7 +21,6 @@ class SuitSelector extends Component {
 
   // TODO Could implement some confirmation handling instead of setting straight away
   setSuit(suit) {
-    console.log("Clicked suit " + suit);
     let suitAttempt = {
       suit: suit,
       player: loadPlayerId()

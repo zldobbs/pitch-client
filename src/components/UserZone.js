@@ -15,7 +15,8 @@ class UserZone extends Component {
     super(props);
 
     this.state = {
-      selectedCards: []
+      selectedCards: [],
+      errorText: ''
     }
 
     this.handleCardClick = this.handleCardClick.bind(this);
@@ -38,14 +39,19 @@ class UserZone extends Component {
         .then((res) => {
           if (res.data.status === "success") {
             console.log(res.data);
+            this.setState({ errorText: '' });
+          }
+          else if (res.data.status === "invalidSuit") {
+            this.setState({ errorText: res.data.details });
           }
           else {
-            // TODO Display an error if user played an invalid suit 
             console.log(res.data.details); 
+            this.setState({ errorText: res.data.details });
           }
         })
         .catch((err) => {
           console.log(err); 
+          this.setState({ errorText: err });
         });
       }
       else {
@@ -65,6 +71,7 @@ class UserZone extends Component {
     return(
       <div className={"col s12 center-align z-depth-3 user-zone " + (this.props.team === 1 ? 'team-1-color ' : 'team-2-color ') + (this.props.activePlayer._id === this.props.player._id ? 'colored-z-depth-3' : 'z-depth-3')}>
         <p>{this.props.player.displayName}</p>
+        <p className="slim-p">{this.state.errorText}</p>
         <div className={this.props.player.hand.length > 9 ? "scrolling-card-row" : "card-row"}>
           {cards}
         </div>
