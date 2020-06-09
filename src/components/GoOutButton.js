@@ -46,7 +46,7 @@ class GoOutButton extends Component {
         break; 
     }
     
-    for (let i = 0; i < this.props.player.hand[i]; i++) {
+    for (let i = 0; i < this.props.player.hand.length; i++) {
       let card = this.props.player.hand[i];
       if (card === offJack || card > 52 || (card >= startRange && card <= endRange)) {
         return true; 
@@ -78,7 +78,7 @@ class GoOutButton extends Component {
   // Can do this by checking the cards the given player has. Use similar logic as CardPicker...
   render() {
     let display = (<span></span>);  
-    if (this.props.suit !== -1 && !this.checkCardsLeftOnSuit()) {
+    if (this.props.suit !== -1 && this.props.player.hand.length > 0 && !this.checkCardsLeftOnSuit()) {
       display = (
         <div className="col s12 center-align">
           <button className="btn waves-effect" onClick={() => this.handleGoOut()}>Go Out</button>

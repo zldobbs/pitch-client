@@ -18,7 +18,10 @@ class TeamScore extends Component {
               <p>{this.props.team.player2.displayName}</p>
             </div>
             <div className="col s4 team-score-points">
-              <p>{this.props.team.score}</p>
+              <p>{this.props.teamNum === 1 ? this.props.game.team1Score : this.props.game.team2Score}</p>
+            </div>
+            <div className="col s12 team-score-roster">
+              <p>Points gained this round: {this.props.teamNum === 1 ? this.props.game.team1PointsInRound : this.props.game.team2PointsInRound}</p>
             </div>
           </div>
         </div>

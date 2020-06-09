@@ -34,6 +34,8 @@ class RoomGameView extends Component {
 
   componentDidMount() {
     socket.on('room-update', (room) => {
+      console.log('room update');
+      console.log(room);
       this.setState({ room: room });
 
       axios.get(`${endpoint}/api/player/${this.state.playerId}`)
@@ -139,10 +141,11 @@ class RoomGameView extends Component {
   }
 
   render() {
-    if (!this.state.room._id || !this.state.player._id) {
+    if (!this.state.room || !this.state.room._id || !this.state.player._id) {
       return(
         <div className="row center-align">
           <p>Loading room...</p>
+          <p>If the room does not load try refreshing the page.</p>
         </div>
       );
     }
@@ -191,8 +194,8 @@ class RoomGameView extends Component {
           {/* TODO Will need to be careful managing screen heights here... */}
           <div className="col s8">
             <div className="row">
-              <TeamScore team={this.state.room.team1} teamNum={1}></TeamScore>
-              <TeamScore team={this.state.room.team2} teamNum={2}></TeamScore>
+              <TeamScore team={this.state.room.team1} teamNum={1} game={this.state.room.activeGame}></TeamScore>
+              <TeamScore team={this.state.room.team2} teamNum={2} game={this.state.room.activeGame}></TeamScore>
             </div>
             <div className="row no-margin-bottom">
               <div className="col s12 center-align">
@@ -212,13 +215,13 @@ class RoomGameView extends Component {
             </div>
             <div className="row">
               <div className="col s10 push-s1 m6 push-m3 center-align">
-                <ButtonRow player={this.state.player} activeGame={this.state.room.activeGame} dealer={this.state.room.dealer} bid={this.state.room.activeGame.bid} suit={this.state.room.activeGame.suit}></ButtonRow>
+                <ButtonRow player={this.state.player} activeGame={this.state.room.activeGame} dealer={this.state.room.dealer} bid={this.state.room.activeGame.bid} suit={this.state.room.activeGame.suit} team1={this.state.room.team1} team2={this.state.room.team2} room={this.state.room.short_id}></ButtonRow>
               </div>
             </div>
           </div>
         </div>
         <div className="row user-zone-col">
-          <UserZone player={this.state.player} team={this.getAssignedTeam(this.state.player)} activePlayer={this.state.room.activeGame.activePlayer}></UserZone>
+          <UserZone player={this.state.player} team={this.getAssignedTeam(this.state.player)} activePlayer={this.state.room.activeGame.activePlayer} suit={this.state.room.activeGame.suit}></UserZone>
         </div>
       </div>
 

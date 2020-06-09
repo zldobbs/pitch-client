@@ -65,13 +65,13 @@ class UserZone extends Component {
     // Need to update the number of cards we are displaying based on how many user has left 
     let cards = [];
     for (let i = 0; i < this.props.player.hand.length; i++) {
-      cards.push(<Card key={i} cardNum={this.props.player.hand[i]} clickHandler={() => this.handleCardClick(i)} highlight={this.state.selectedCards.indexOf(this.props.player.hand[i]) >= 0}></Card>);
+      cards.push(<Card key={i} cardNum={this.props.player.hand[i]} clickHandler={() => this.handleCardClick(i)} highlight={this.state.selectedCards.indexOf(this.props.player.hand[i]) >= 0 && this.props.suit > -1}></Card>);
     }
 
     return(
       <div className={"col s12 center-align z-depth-3 user-zone " + (this.props.team === 1 ? 'team-1-color ' : 'team-2-color ') + (this.props.activePlayer._id === this.props.player._id ? 'colored-z-depth-3' : 'z-depth-3')}>
         <p>{this.props.player.displayName}</p>
-        <p className="slim-p">{this.state.errorText}</p>
+        <p className="slim-p">{this.props.suit > -1 && this.state.errorText}</p>
         <div className={this.props.player.hand.length > 9 ? "scrolling-card-row" : "card-row"}>
           {cards}
         </div>
