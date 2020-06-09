@@ -53,7 +53,17 @@ export default App;
 export const siteLink = 'http://localhost:3000';
 
 // manage the endpoint of the server for api requests
-export const endpoint = 'http://localhost:8000';
+let endpointString;
+
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  // dev code
+  endpointString = 'http://localhost:8000';
+} else {
+  // production code
+  endpointString = '';
+}
+
+export const endpoint = endpointString; 
 
 // Setup socket connection with backend 
 export const socket = socketIOClient(endpoint);
