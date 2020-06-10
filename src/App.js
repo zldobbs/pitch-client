@@ -49,21 +49,22 @@ class App extends Component {
 
 export default App;
 
-// define the endpoint of this frontend
-export const siteLink = 'http://localhost:3000';
-
-// manage the endpoint of the server for api requests
+// endpoint defines backend URL, siteLink defines frontend URL 
 let endpointString;
+let siteLinkString; 
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   // dev code
   endpointString = 'http://localhost:8000';
+  siteLinkString = 'http://localhost:3000'; 
 } else {
   // production code
-  endpointString = '';
+  endpointString = 'https://dobbs-pitch.herokuapp.com';
+  siteLinkString = 'https://dobbs-pitch.herokuapp.com'; 
 }
 
 export const endpoint = endpointString; 
+export const siteLink = siteLinkString; 
 
 // Setup socket connection with backend 
 export const socket = socketIOClient(endpoint);
