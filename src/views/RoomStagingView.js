@@ -136,7 +136,7 @@ class RoomStagingView extends Component {
         readyButton = (<button onClick={this.handleReadyClick} className="btn waves-effect green">Ready</button>);
       }
       else {
-        readyButton = (<button onClick={this.handleReadyClick} className="btn waves-effect red">Not Ready</button>);
+        readyButton = (<button onClick={this.handleReadyClick} className="btn waves-effect grey">Ready Up</button>);
       }
     }
     else {

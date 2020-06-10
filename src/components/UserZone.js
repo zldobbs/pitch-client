@@ -65,7 +65,7 @@ class UserZone extends Component {
     // Need to update the number of cards we are displaying based on how many user has left 
     let cards = [];
     for (let i = 0; i < this.props.player.hand.length; i++) {
-      cards.push(<Card key={i} cardNum={this.props.player.hand[i]} clickHandler={() => this.handleCardClick(i)} highlight={this.state.selectedCards.indexOf(this.props.player.hand[i]) >= 0 && this.props.suit > -1}></Card>);
+      cards.push(<Card key={i} cardNum={this.props.player.hand[i]} clickHandler={() => this.handleCardClick(i)} highlight={this.state.selectedCards.indexOf(this.props.player.hand[i]) >= 0 && this.props.activePlayer !== null && this.props.activePlayer._id === this.props.player._id}></Card>);
     }
 
     return(
