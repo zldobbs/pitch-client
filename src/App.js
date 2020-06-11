@@ -19,6 +19,9 @@ import RegisterView from './views/RegisterView';
 import RoomGameView from './views/RoomGameView';
 import RoomStagingView from './views/RoomStagingView'; 
 
+// helpers
+import requestCacheInterceptor from './AxiosInterceptors'; 
+
 class App extends Component {
   componentDidMount() {
     M.AutoInit();
