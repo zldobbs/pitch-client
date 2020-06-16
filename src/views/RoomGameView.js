@@ -30,12 +30,11 @@ class RoomGameView extends Component {
 
     this.getAssignedTeam = this.getAssignedTeam.bind(this); 
     this.getBiddingTag = this.getBiddingTag.bind(this); 
+    this.getRoom = this.getRoom.bind(this);
   }
 
   componentDidMount() {
     socket.on('room-update', (room) => {
-      console.log('room update');
-      console.log(room);
       this.setState({ room: room });
 
       axios.get(`${endpoint}/api/player/${this.state.playerId}`)
@@ -49,9 +48,19 @@ class RoomGameView extends Component {
       });
     });
 
+    this.getRoom();
+
+    setInterval(this.getRoom, 5000);
+  }
+
+  getRoom() {
     axios.get(`${endpoint}/api/room/${this.props.match.params.roomId}`)
     .then((res) => {
       if (res.data.status === "success") {
+        if (Object.keys(this.state.room).length === 0 && this.state.room.constructor === Object) {
+          socket.emit('join-room', res.data.room.short_id);
+        }
+
         this.setState({ 
           room: res.data.room,
           user: loadUser(),
@@ -69,7 +78,6 @@ class RoomGameView extends Component {
             console.log(err); 
           });
         }
-        socket.emit('join-room', res.data.room.short_id);
       }
       else {
         this.setState({ redirect: true });

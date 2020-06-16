@@ -24,6 +24,7 @@ class RoomStagingView extends Component {
 
     this.handleReadyClick = this.handleReadyClick.bind(this);
     this.playerIsInRoom = this.playerIsInRoom.bind(this); 
+    this.getRoom = this.getRoom.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +36,12 @@ class RoomStagingView extends Component {
       this.setState({ redirect: true });
     });
 
+    this.getRoom();
+
+    setInterval(this.getRoom, 5000);
+  }
+
+  getRoom() {
     // Retrieve the current room
     axios.get(`${endpoint}/api/room/${this.props.match.params.roomId}`)
     .then((res) => {
@@ -43,12 +50,16 @@ class RoomStagingView extends Component {
           this.setState({ redirect: true, room: res.data.room });
           return; 
         }
+
+        if (Object.keys(this.state.room).length === 0 && this.state.room.constructor === Object) {
+          socket.emit('join-room', res.data.room.short_id);
+        }
+
         this.setState({ 
           room: res.data.room,
           user: loadUser(), 
           playerId: loadPlayerId() 
         });
-        socket.emit('join-room', res.data.room.short_id);
 
         // Get the player if the user is signed in 
         if (this.state.playerId) {
