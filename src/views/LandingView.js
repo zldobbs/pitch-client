@@ -108,13 +108,13 @@ class LandingView extends Component {
         </div>
         <form onSubmit={this.joinRoom}>
             <div className="row center-align">
-            <div className="col s9 m3 offset-m4 input-field inline">
-                <input id="room-id" type="text" className="validate" onChange={this.handleJoinRoomValChanged} value={this.state.joinRoomVal} required />
-                <label htmlFor="room-id">Room ID</label>
-            </div>
-            <div className="col s2 m1">
-                <button type="submit" className="btn waves-effect">Join</button>
-            </div>
+              <div className="col s9 m3 offset-m4 input-field inline">
+                  <input id="room-id" type="text" className="validate" onChange={this.handleJoinRoomValChanged} value={this.state.joinRoomVal} required />
+                  <label htmlFor="room-id">Room ID</label>
+              </div>
+              <div className="col s2 m1">
+                  <button type="submit" className="btn waves-effect">Join</button>
+              </div>
             </div>
         </form>
       </div>

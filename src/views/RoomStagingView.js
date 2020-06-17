@@ -10,6 +10,7 @@ import axios from 'axios';
 import { siteLink, endpoint, loadUser, socket, loadPlayerId } from '../App';
 
 import TeamList from '../components/TeamList'; 
+import ChatButton from '../components/ChatButton';
 
 class RoomStagingView extends Component {
   constructor(props) {
@@ -153,32 +154,34 @@ class RoomStagingView extends Component {
     else {
       readyButton = (<span></span>);
     }
-
     return(
-      <div className="container">
-        <div className="row center-align">
-          <div className="col s12 m6 offset-m3">
-            <h4>Preparing game</h4>
-            <h6>Your Room ID is: { this.state.room.short_id }</h6>
-            <p>The magic link to join this room is: <Link to={{ pathname:`/room/staging/${this.state.room.short_id}` }}>{siteLink}/room/staging/{this.state.room.short_id}</Link></p>
+      <div className="container-fluid">
+        <ChatButton roomId={this.state.room.short_id} messages={this.state.room.messages}></ChatButton>
+        <div className="container">
+          <div className="row center-align">
+            <div className="col s12 m6 offset-m3">
+              <h4>Preparing game</h4>
+              <h6>Your Room ID is: { this.state.room.short_id }</h6>
+              <p>The magic link to join this room is: <Link to={{ pathname:`/room/staging/${this.state.room.short_id}` }}>{siteLink}/room/staging/{this.state.room.short_id}</Link></p>
+            </div>
           </div>
-        </div>
-        <div className="row center-align">
-          <div className="col s12 m6 offset-m3">
-            <p>You are {loginText}</p>
+          <div className="row center-align">
+            <div className="col s12 m6 offset-m3">
+              <p>You are {loginText}</p>
+            </div>
           </div>
-        </div>
-        <div className="row center-align">
-          <TeamList player={this.state.player} team={this.state.room.team1}></TeamList>
-          <TeamList player={this.state.player} team={this.state.room.team2}></TeamList>
-        </div>
-        <div className="row center-align">
-          <p>Game will begin when all players are ready</p>
-          {readyButton}
-        </div>
-        <div className="row">
-          <div className="col s4 m4 offset-m4 center-align">
-            <p><Link to="/">Home</Link></p>
+          <div className="row center-align">
+            <TeamList player={this.state.player} team={this.state.room.team1}></TeamList>
+            <TeamList player={this.state.player} team={this.state.room.team2}></TeamList>
+          </div>
+          <div className="row center-align">
+            <p>Game will begin when all players are ready</p>
+            {readyButton}
+          </div>
+          <div className="row">
+            <div className="col s4 m4 offset-m4 center-align">
+              <p><Link to="/">Home</Link></p>
+            </div>
           </div>
         </div>
       </div>

@@ -111,7 +111,7 @@ class TeamList extends Component {
     return(
       <div className="col s12 m6">
         <p>{ this.props.team.name }</p>
-        <ul className="collection">
+        <ul className="collection team-collection">
           {this.getPlayer(1)}
           {this.getPlayer(2)}
         </ul>

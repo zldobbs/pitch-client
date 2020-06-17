@@ -44,13 +44,26 @@ input {
   margin-top: 0; 
 }
 
-.collection {
+.team-collection {
   max-height: 150px;
-  overflow-y: auto;
+}
+
+.message-collection {
+  max-height: 65vh; 
+}
+
+.collection {
+  overflow-y: auto; 
 }
 
 .collection-item {
   color: #000000; 
+}
+
+.btn, .fixed-action-btn {
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
 }
 
 .colored-z-depth-3 {
@@ -63,7 +76,7 @@ input {
   position: absolute; 
   z-index: 100;
   width: 90vw; 
-  height: 60vh; 
+  height: 80vh; 
   top: 5vh; 
   left: 5vw;
   color: #FFFFFF;

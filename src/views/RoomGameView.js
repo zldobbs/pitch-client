@@ -15,6 +15,7 @@ import PlayedCard from '../components/PlayedCard';
 import PlayerZone from '../components/PlayerZone';
 import UserZone from '../components/UserZone';
 import TeamScore from '../components/TeamScore';
+import ChatButton from '../components/ChatButton';
 
 class RoomGameView extends Component {
   constructor(props) {
@@ -191,6 +192,7 @@ class RoomGameView extends Component {
           this.state.showCardPicker && 
           <CardPicker activePlayer={this.state.room.activeGame.activePlayer} suit={this.state.room.activeGame.suit} suitName={this.state.room.activeGame.suitName} hand={this.state.player.hand}></CardPicker>
         }
+        <ChatButton roomId={this.state.room.short_id} messages={this.state.room.messages}></ChatButton>
         <div className="row player-zone-col">
           <div className="col s4">
             <div className="row">
