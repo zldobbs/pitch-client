@@ -20,7 +20,8 @@ class RoomStagingView extends Component {
       room: {},
       user: '',
       playerId: undefined,
-      player: {}
+      player: {},
+      roomFetcher: undefined
     };
 
     this.handleReadyClick = this.handleReadyClick.bind(this);
