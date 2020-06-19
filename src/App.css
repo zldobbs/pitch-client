@@ -75,8 +75,8 @@ input {
 .dialog {
   position: absolute; 
   z-index: 100;
-  width: 90vw; 
-  height: 80vh; 
+  min-width: 90vw; 
+  min-height: 80vh; 
   top: 5vh; 
   left: 5vw;
   color: #FFFFFF;

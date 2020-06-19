@@ -7,6 +7,8 @@
 
 import React, { Component } from 'react';
 import ChatBox from './ChatBox';
+import M from 'materialize-css'; 
+import { socket } from '../App';
 
 class ChatButton extends Component {
   constructor(props) {
@@ -17,6 +19,13 @@ class ChatButton extends Component {
     };
     
     this.toggleChatBox = this.toggleChatBox.bind(this); 
+  }
+
+  componentDidMount() {
+    socket.on('new-message', (message) => {
+      console.log("New message received"); 
+      return M.toast({html: `<b>${message.player.displayName}:</b>   ${message.message}`, classes: 'yellow black-text'});
+    });
   }
 
   toggleChatBox() {

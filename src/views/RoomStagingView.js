@@ -39,7 +39,12 @@ class RoomStagingView extends Component {
 
     this.getRoom();
 
-    setInterval(this.getRoom, 5000);
+    let roomFetcher = setInterval(this.getRoom, 5000);
+    this.setState({ roomFetcher: roomFetcher });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.roomFetcher);
   }
 
   getRoom() {

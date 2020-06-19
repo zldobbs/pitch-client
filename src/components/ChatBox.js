@@ -54,8 +54,7 @@ class ChatBox extends Component {
     this.props.messages.forEach((message, i) => {
       messageItems.push(
         <li className="collection-item" key={i}>
-          <b>{message.player.displayName}:</b> {message.message} <br/>
-          <i>{message.timestamp}</i>
+          <b>{message.player.displayName}:</b> {message.message}
         </li>
       );
     });

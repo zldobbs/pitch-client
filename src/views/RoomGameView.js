@@ -26,7 +26,8 @@ class RoomGameView extends Component {
       showCardPicker: false, 
       room: {}, 
       playerId: '',
-      player: {}
+      player: {}, 
+      roomFetcher: undefined
     }
 
     this.getAssignedTeam = this.getAssignedTeam.bind(this); 
@@ -51,7 +52,12 @@ class RoomGameView extends Component {
 
     this.getRoom();
 
-    setInterval(this.getRoom, 5000);
+    let roomFetcher = setInterval(this.getRoom, 5000);
+    this.setState({ roomFetcher: roomFetcher });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.roomFetcher);
   }
 
   getRoom() {
@@ -81,11 +87,10 @@ class RoomGameView extends Component {
         }
       }
       else {
-        this.setState({ redirect: true });
+        console.log("Failed to fetch room.")
       }
     }).catch((err) => {
       console.log(err);
-      this.setState({ redirect: true });
     });
   }
 
