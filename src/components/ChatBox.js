@@ -69,7 +69,9 @@ class ChatBox extends Component {
               <label htmlFor="message">Message</label>
             </div>
             <div className="col s2 m2">
-              <button type="submit" className="btn waves-effect">Send</button>
+              <button type="submit" className="btn waves-effect">
+                <i className="material-icons">send</i>
+              </button>
             </div>
           </form>
         </div>
@@ -87,7 +89,7 @@ class ChatBox extends Component {
       <div>
         <div className="dialog-backdrop" onClick={this.props.closeHandler}></div>
         <div className="container dialog z-depth-3">
-          <div className="row">
+          <div className="row message-box">
             <ul className="collection message-collection">
               {messageItems}
             </ul>

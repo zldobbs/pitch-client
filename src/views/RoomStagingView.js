@@ -177,8 +177,8 @@ class RoomStagingView extends Component {
             </div>
           </div>
           <div className="row center-align">
-            <TeamList player={this.state.player} team={this.state.room.team1}></TeamList>
-            <TeamList player={this.state.player} team={this.state.room.team2}></TeamList>
+            <TeamList player={this.state.player} team={this.state.room.team1} roomId={this.state.room.short_id}></TeamList>
+            <TeamList player={this.state.player} team={this.state.room.team2} roomId={this.state.room.short_id}></TeamList>
           </div>
           <div className="row center-align">
             <p>Game will begin when all players are ready</p>

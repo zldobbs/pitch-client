@@ -11,14 +11,20 @@ import '../App.css';
 
 import { endpoint, loadUser, loadPlayerId, savePlayerId, deletePlayerId } from '../App';
 import axios from 'axios'; 
+import EditName from './EditName';
 
 class TeamList extends Component {
   constructor(props) {
     super(props); 
 
+    this.state = {
+      openEditDialog: false
+    }
+
     this.onClickJoinTeam = this.onClickJoinTeam.bind(this);
     this.onClickLeaveTeam = this.onClickLeaveTeam.bind(this);
     this.getPlayer = this.getPlayer.bind(this); 
+    this.onClickOpenEdit = this.onClickOpenEdit.bind(this); 
   }
 
   async onClickJoinTeam() {
@@ -57,6 +63,11 @@ class TeamList extends Component {
     });
   }
 
+  onClickOpenEdit() {
+    let { openEditDialog } = this.state; 
+    this.setState({ openEditDialog: !openEditDialog });
+  }
+
   getPlayer(num) {
     switch(num) {
       case 1: {
@@ -64,9 +75,9 @@ class TeamList extends Component {
           return(<li className="collection-item">...</li>);
         }
         else {
-          const starIcon = (this.props.team.player1._id === this.props.player._id ? (<i className="tiny material-icons">star</i>) : '');
+          const starIcon = (this.props.team.player1._id === this.props.player._id ? (<i className="tiny material-icons edit-btn" onClick={this.onClickOpenEdit}>edit</i>) : '');
           const readyIcon = (this.props.team.player1.isReady ? (<i className="tiny material-icons green-text">check</i>) : '');
-          return(<li className="collection-item">{starIcon} {this.props.team.player1.displayName} {readyIcon}</li>);
+          return(<li className={this.props.team.player1._id === this.props.player._id ? "yellow collection-item" : "collection-item"}>{starIcon} {this.props.team.player1.displayName} {readyIcon}</li>);
         }
       }
       case 2: {
@@ -74,9 +85,9 @@ class TeamList extends Component {
           return(<li className="collection-item">...</li>);
         }
         else {
-          const starIcon = (this.props.team.player2._id === this.props.player._id ? (<i className="tiny material-icons">star</i>) : '');
+          const starIcon = (this.props.team.player2._id === this.props.player._id ? (<i className="tiny material-icons edit-btn" onClick={this.onClickOpenEdit}>edit</i>) : '');
           const readyIcon = (this.props.team.player2.isReady ? (<i className="tiny material-icons green-text">check</i>) : '');
-          return(<li className="collection-item">{starIcon} {this.props.team.player2.displayName} {readyIcon}</li>);
+          return(<li className={this.props.team.player2._id === this.props.player._id ? "yellow collection-item" : "collection-item"}>{starIcon} {this.props.team.player2.displayName} {readyIcon}</li>);
         }
       }
       default: 
@@ -109,13 +120,19 @@ class TeamList extends Component {
     }
 
     return(
-      <div className="col s12 m6">
-        <p>{ this.props.team.name }</p>
-        <ul className="collection team-collection">
-          {this.getPlayer(1)}
-          {this.getPlayer(2)}
-        </ul>
-        {teamButton}
+      <div>
+        {
+          this.state.openEditDialog &&
+          <EditName closeHandler={this.onClickOpenEdit} player={this.props.player} roomId={this.props.roomId}></EditName>
+        }
+        <div className="col s12 m6">
+          <p>{ this.props.team.name }</p>
+          <ul className="collection team-collection">
+            {this.getPlayer(1)}
+            {this.getPlayer(2)}
+          </ul>
+          {teamButton}
+        </div>
       </div>
     );
   }

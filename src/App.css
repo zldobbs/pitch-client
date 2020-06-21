@@ -48,6 +48,11 @@ input {
   max-height: 150px;
 }
 
+.message-box {
+  min-height: 67vh; 
+  background-color: #FFFFFF;
+}
+
 .message-collection {
   max-height: 65vh; 
 }
@@ -88,6 +93,8 @@ input {
   z-index: 99; 
   width: 100vw;
   height: 100vh; 
+  top: 0;
+  left: 0; 
   background-color: rgba(0,0,0,0.7);
 }
 
@@ -156,7 +163,7 @@ input {
   margin-bottom: 0; 
 }
 
-.suit-selection-row img, .suit-selection-row p {
+.suit-selection-row img, .suit-selection-row p, .edit-btn {
   cursor: pointer; 
 }
 
