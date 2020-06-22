@@ -90,7 +90,7 @@ class RoomStagingView extends Component {
 
     const readyRequest = { 
       playerId: this.state.playerId,
-      roomId: this.state.room._id
+      roomId: this.state.room.short_id
     };
     axios.post(`${endpoint}/api/player/ready`, readyRequest)
     .then((res) => {
