@@ -163,6 +163,11 @@ input {
   margin-bottom: 0; 
 }
 
+.dummy-div {
+  float: left;
+  clear: both;
+}
+
 .suit-selection-row img, .suit-selection-row p, .edit-btn {
   cursor: pointer; 
 }

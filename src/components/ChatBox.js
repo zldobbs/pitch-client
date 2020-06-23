@@ -16,11 +16,23 @@ class ChatBox extends Component {
     super(props);
 
     this.state = {
-      messageVal: '', 
+      messageVal: ''
     }
 
     this.sendMessage = this.sendMessage.bind(this); 
     this.handleMessageValChange = this.handleMessageValChange.bind(this); 
+  }
+
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom() {
+    this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
   }
 
   sendMessage(e) {
@@ -32,9 +44,6 @@ class ChatBox extends Component {
         player: loadPlayerId()
       };
       axios.post(`${endpoint}/api/chat/`, sendMessageRequest)
-      .then((res) => {
-        console.log(res); 
-      })
       .catch((err) => {
         console.log(err); 
       });
@@ -50,7 +59,6 @@ class ChatBox extends Component {
 
   render() {
     let messageItems = [];
-    // TODO sort display of messages by timestamp 
     this.props.messages.forEach((message, i) => {
       messageItems.push(
         <li className="collection-item" key={i}>
@@ -92,6 +100,7 @@ class ChatBox extends Component {
           <div className="row message-box">
             <ul className="collection message-collection">
               {messageItems}
+              <div className="dummy-div" ref={(el) => { this.messagesEnd = el; }}></div>
             </ul>
           </div>
           {messageInput}

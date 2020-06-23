@@ -2,7 +2,10 @@
     components/ChatButton
 
     Floating button that can be used to open chat interface 
-    TODO Implement notifications when users have unread messages 
+    TODO There is an outstanding error with the chat button getting hit twice after transitioning from staging to game view
+    -- Refreshing fixes this
+    -- Hack in place with _isMounted 
+    -- The API still gets hit twice... Not ideal.
 */
 
 import React, { Component } from 'react';
@@ -18,26 +21,32 @@ class ChatButton extends Component {
       showChatBox: false
     };
     
-    this.toggleChatBox = this.toggleChatBox.bind(this); 
+    this.toggleChatBox = this.toggleChatBox.bind(this);
+    this._isMounted = true;  
   }
 
   componentDidMount() {
     socket.on('new-message', (message) => {
-      console.log("New message received"); 
-      return M.toast({html: `<b>${message.player.displayName}:</b>   ${message.message}`, classes: 'yellow black-text'});
+      if (this._isMounted) {
+        return M.toast({html: `<b>${message.player.displayName}:</b>   ${message.message}`, classes: 'yellow black-text'});
+      }
     });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false; 
   }
 
   toggleChatBox() {
     let { showChatBox } = this.state; 
-    this.setState({ showChatBox: !showChatBox });
+    this._isMounted && this.setState({ showChatBox: !showChatBox });
   }
 
   render() {
     return(
       <div>
         {
-          this.state.showChatBox &&
+          this.state.showChatBox && this._isMounted &&
           <ChatBox closeHandler={this.toggleChatBox} roomId={this.props.roomId} messages={this.props.messages}></ChatBox>
         }
         <div className="fixed-action-btn" onClick={() => this.toggleChatBox()}>

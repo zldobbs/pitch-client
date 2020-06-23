@@ -27,24 +27,27 @@ class RoomStagingView extends Component {
     this.handleReadyClick = this.handleReadyClick.bind(this);
     this.playerIsInRoom = this.playerIsInRoom.bind(this); 
     this.getRoom = this.getRoom.bind(this);
+
+    this._isMounted = true; 
   }
 
   componentDidMount() {
     socket.on('room-update', (room) => {
-      this.setState({ room: room });
+      this._isMounted && this.setState({ room: room });
     });
 
     socket.on('room-ready', (roomId) => {
-      this.setState({ redirect: true });
+      this._isMounted && this.setState({ redirect: true });
     });
 
     this.getRoom();
 
     let roomFetcher = setInterval(this.getRoom, 5000);
-    this.setState({ roomFetcher: roomFetcher });
+    this._isMounted && this.setState({ roomFetcher: roomFetcher });
   }
 
   componentWillUnmount() {
+    this._isMounted = false; 
     clearInterval(this.state.roomFetcher);
   }
 
@@ -54,7 +57,7 @@ class RoomStagingView extends Component {
     .then((res) => {
       if (res.data.status === "success") {
         if (res.data.room.activeGame !== null) {
-          this.setState({ redirect: true, room: res.data.room });
+          this._isMounted && this.setState({ redirect: true, room: res.data.room });
           return; 
         }
 
@@ -62,7 +65,7 @@ class RoomStagingView extends Component {
           socket.emit('join-room', res.data.room.short_id);
         }
 
-        this.setState({ 
+        this._isMounted && this.setState({ 
           room: res.data.room,
           user: loadUser(), 
           playerId: loadPlayerId() 
@@ -72,7 +75,7 @@ class RoomStagingView extends Component {
         if (this.state.playerId) {
           axios.get(`${endpoint}/api/player/${this.state.playerId}`)
           .then((res) => {
-            this.setState({ player: res.data.player });
+            this._isMounted && this.setState({ player: res.data.player });
           }).catch((err) => {
             console.log(err); 
           })
@@ -95,7 +98,7 @@ class RoomStagingView extends Component {
     axios.post(`${endpoint}/api/player/ready`, readyRequest)
     .then((res) => {
       if (res.data.status === "success") {
-        this.setState({ player: res.data.player });
+        this._isMounted && this.setState({ player: res.data.player });
       }
     })
     .catch((err) => {
@@ -162,7 +165,10 @@ class RoomStagingView extends Component {
     }
     return(
       <div className="container-fluid">
-        <ChatButton roomId={this.state.room.short_id} messages={this.state.room.messages}></ChatButton>
+        {
+          this._isMounted && 
+          <ChatButton roomId={this.state.room.short_id} messages={this.state.room.messages}></ChatButton>
+        }
         <div className="container">
           <div className="row center-align">
             <div className="col s12 m6 offset-m3">
