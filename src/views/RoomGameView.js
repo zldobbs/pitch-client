@@ -16,6 +16,7 @@ import PlayerZone from '../components/PlayerZone';
 import UserZone from '../components/UserZone';
 import TeamScore from '../components/TeamScore';
 import ChatButton from '../components/ChatButton';
+import HelpButton from '../components/HelpButton';
 
 class RoomGameView extends Component {
   constructor(props) {
@@ -27,12 +28,14 @@ class RoomGameView extends Component {
       room: {}, 
       playerId: '',
       player: {}, 
-      roomFetcher: undefined
+      roomFetcher: undefined,
+      buttonOpen: 0
     }
 
     this.getAssignedTeam = this.getAssignedTeam.bind(this); 
     this.getBiddingTag = this.getBiddingTag.bind(this); 
     this.getRoom = this.getRoom.bind(this);
+    this.toggleButtonOpen = this.toggleButtonOpen.bind(this);
   }
 
   componentDidMount() {
@@ -92,6 +95,10 @@ class RoomGameView extends Component {
     }).catch((err) => {
       console.log(err);
     });
+  }
+
+  toggleButtonOpen(button) {
+    this.setState({ buttonOpen: button });
   }
 
   getAssignedTeam(player) {
@@ -197,7 +204,14 @@ class RoomGameView extends Component {
           this.state.showCardPicker && 
           <CardPicker activePlayer={this.state.room.activeGame.activePlayer} suit={this.state.room.activeGame.suit} suitName={this.state.room.activeGame.suitName} hand={this.state.player.hand}></CardPicker>
         }
-        <ChatButton roomId={this.state.room.short_id} messages={this.state.room.messages}></ChatButton>
+        {
+          this.state.buttonOpen !== 2 &&
+          <ChatButton roomId={this.state.room.short_id} messages={this.state.room.messages} toggleButtonOpen={this.toggleButtonOpen}></ChatButton>
+        }
+        { 
+          this.state.buttonOpen !== 1 && 
+          <HelpButton toggleButtonOpen={this.toggleButtonOpen}></HelpButton>
+        }
         <div className="row player-zone-col">
           <div className="col s4">
             <div className="row">

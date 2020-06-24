@@ -40,6 +40,7 @@ class ChatButton extends Component {
   toggleChatBox() {
     let { showChatBox } = this.state; 
     this._isMounted && this.setState({ showChatBox: !showChatBox });
+    this._isMounted && this.props.toggleButtonOpen((this.state.showChatBox ? 0 : 1));
   }
 
   render() {

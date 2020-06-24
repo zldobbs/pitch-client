@@ -65,7 +65,7 @@ input {
   color: #000000; 
 }
 
-.btn, .fixed-action-btn {
+.btn, .fixed-action-btn, .fixed-action-btn-left {
   -webkit-user-select: none;  /* Chrome all / Safari all */
   -moz-user-select: none;     /* Firefox all */
   -ms-user-select: none;      /* IE 10+ */
@@ -82,6 +82,8 @@ input {
   z-index: 100;
   min-width: 90vw; 
   min-height: 80vh; 
+  max-height: 80vh; 
+  overflow-y: scroll;
   top: 5vh; 
   left: 5vw;
   color: #FFFFFF;
@@ -184,6 +186,15 @@ input {
 
 .played-card-box {
   margin: 0 auto;
+}
+
+.fixed-action-btn-left {
+  position: fixed;
+  left: 23px;
+  bottom: 23px;
+  padding-top: 15px;
+  margin-bottom: 0;
+  z-index: 997;
 }
 
 /* Specific rules to be applied to sm */

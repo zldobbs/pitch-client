@@ -11,6 +11,7 @@ import { siteLink, endpoint, loadUser, socket, loadPlayerId } from '../App';
 
 import TeamList from '../components/TeamList'; 
 import ChatButton from '../components/ChatButton';
+import HelpButton from '../components/HelpButton';
 
 class RoomStagingView extends Component {
   constructor(props) {
@@ -21,12 +22,14 @@ class RoomStagingView extends Component {
       user: '',
       playerId: undefined,
       player: {},
-      roomFetcher: undefined
+      roomFetcher: undefined,
+      buttonOpen: 0
     };
 
     this.handleReadyClick = this.handleReadyClick.bind(this);
     this.playerIsInRoom = this.playerIsInRoom.bind(this); 
     this.getRoom = this.getRoom.bind(this);
+    this.toggleButtonOpen = this.toggleButtonOpen.bind(this);
 
     this._isMounted = true; 
   }
@@ -49,6 +52,10 @@ class RoomStagingView extends Component {
   componentWillUnmount() {
     this._isMounted = false; 
     clearInterval(this.state.roomFetcher);
+  }
+
+  toggleButtonOpen(button) {
+    this._isMounted && this.setState({ buttonOpen: button });
   }
 
   getRoom() {
@@ -166,8 +173,12 @@ class RoomStagingView extends Component {
     return(
       <div className="container-fluid">
         {
-          this._isMounted && 
-          <ChatButton roomId={this.state.room.short_id} messages={this.state.room.messages}></ChatButton>
+          this._isMounted && this.state.buttonOpen !== 2 &&
+          <ChatButton roomId={this.state.room.short_id} messages={this.state.room.messages} toggleButtonOpen={this.toggleButtonOpen}></ChatButton>
+        }
+        {
+          this._isMounted && this.state.buttonOpen !== 1 &&
+          <HelpButton toggleButtonOpen={this.toggleButtonOpen}></HelpButton>
         }
         <div className="container">
           <div className="row center-align">
@@ -177,11 +188,11 @@ class RoomStagingView extends Component {
               <p>The magic link to join this room is: <Link to={{ pathname:`/room/staging/${this.state.room.short_id}` }}>{siteLink}/room/staging/{this.state.room.short_id}</Link></p>
             </div>
           </div>
-          <div className="row center-align">
+          {/* <div className="row center-align">
             <div className="col s12 m6 offset-m3">
               <p>You are {loginText}</p>
             </div>
-          </div>
+          </div> */}
           <div className="row center-align">
             <TeamList player={this.state.player} team={this.state.room.team1} roomId={this.state.room.short_id}></TeamList>
             <TeamList player={this.state.player} team={this.state.room.team2} roomId={this.state.room.short_id}></TeamList>
@@ -191,7 +202,7 @@ class RoomStagingView extends Component {
             {readyButton}
           </div>
           <div className="row">
-            <div className="col s4 m4 offset-m4 center-align">
+            <div className="col s4 m4 offset-m4 center">
               <p><Link to="/">Home</Link></p>
             </div>
           </div>
