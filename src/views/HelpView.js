@@ -11,13 +11,15 @@ import HelpInfo from '../components/HelpInfo';
 class HelpView extends Component {
   render() {
     return(
-      <div className="container">
+      <div className="container-fluid scroll-container">
         <div className="row">
           <div className="col s4 m4 offset-m4 center-align">
             <p><Link to="/">Home</Link></p>
           </div>
         </div>
-        <HelpInfo></HelpInfo>
+        <div className="row">
+          <HelpInfo></HelpInfo>
+        </div>
       </div>
     );
   }

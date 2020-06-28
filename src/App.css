@@ -104,6 +104,11 @@ input {
   margin-bottom: 20px;
 }
 
+.scroll-container {
+  overflow-y: auto;
+  max-height: 100vh; 
+}
+
 .player-zone-col {
   height: 60vh; 
 }
